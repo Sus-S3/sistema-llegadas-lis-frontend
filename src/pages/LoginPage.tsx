@@ -57,7 +57,7 @@ export default function LoginPage() {
         </p>
 
         <a
-          href="http://localhost:3000/auth/google"
+          href={`${import.meta.env.VITE_API_URL}/auth/google`}
           style={{
             display: 'flex',
             alignItems: 'center',
