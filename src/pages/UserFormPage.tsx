@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useUser, useCreateUser, useUpdateUser } from '../hooks/useUsers';
+import { useEstados } from '../hooks/useEstados';
 import Layout from '../components/Layout';
 import type { UserFormData } from '../types';
 
@@ -10,10 +11,6 @@ const ROLES = [
   { id: 3, nombre: 'Auxiliar de programación' },
 ];
 
-const ESTADOS = [
-  { id: 1, nombre: 'Activo' },
-  { id: 2, nombre: 'Inactivo' },
-];
 
 const initialForm: UserFormData = {
   nombre: '',
@@ -29,6 +26,7 @@ export default function UserFormPage() {
 
   const navigate = useNavigate();
   const { data: existingUser, isLoading: loadingUser, error: loadError } = useUser(userId);
+  const { data: estados, isLoading: loadingEstados } = useEstados();
   const createMutation = useCreateUser();
   const updateMutation = useUpdateUser(userId);
 
@@ -216,9 +214,10 @@ export default function UserFormPage() {
                 name="estado_id"
                 value={form.estado_id}
                 onChange={handleChange}
+                disabled={loadingEstados}
                 style={inputStyle(false)}
               >
-                {ESTADOS.map((e) => (
+                {estados?.map((e) => (
                   <option key={e.id} value={e.id}>{e.nombre}</option>
                 ))}
               </select>
