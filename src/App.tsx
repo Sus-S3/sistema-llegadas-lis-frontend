@@ -5,6 +5,10 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
 import UsersPage from './pages/UsersPage';
 import UserFormPage from './pages/UserFormPage';
+import LaboratoriosPage from './pages/LaboratoriosPage';
+import LaboratorioFormPage from './pages/LaboratorioFormPage';
+import DispositivosPage from './pages/DispositivosPage';
+import DispositivoFormPage from './pages/DispositivoFormPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +34,24 @@ export default function App() {
             } />
             <Route path="/usuarios/:id/editar" element={
               <ProtectedRoute><UserFormPage /></ProtectedRoute>
+            } />
+            <Route path="/laboratorios" element={
+              <ProtectedRoute><LaboratoriosPage /></ProtectedRoute>
+            } />
+            <Route path="/laboratorios/nuevo" element={
+              <ProtectedRoute><LaboratorioFormPage /></ProtectedRoute>
+            } />
+            <Route path="/laboratorios/:id/editar" element={
+              <ProtectedRoute><LaboratorioFormPage /></ProtectedRoute>
+            } />
+            <Route path="/dispositivos" element={
+              <ProtectedRoute><DispositivosPage /></ProtectedRoute>
+            } />
+            <Route path="/dispositivos/nuevo" element={
+              <ProtectedRoute><DispositivoFormPage /></ProtectedRoute>
+            } />
+            <Route path="/dispositivos/:id/editar" element={
+              <ProtectedRoute><DispositivoFormPage /></ProtectedRoute>
             } />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>

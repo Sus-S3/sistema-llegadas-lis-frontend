@@ -29,6 +29,12 @@ export default function Layout({ children }: { children: ReactNode }) {
           <Link to="/usuarios" style={{ color: '#cbd5e0', textDecoration: 'none', fontSize: '0.9rem' }}>
             Usuarios
           </Link>
+          <Link to="/laboratorios" style={{ color: '#cbd5e0', textDecoration: 'none', fontSize: '0.9rem' }}>
+            Laboratorios
+          </Link>
+          <Link to="/dispositivos" style={{ color: '#cbd5e0', textDecoration: 'none', fontSize: '0.9rem' }}>
+            Dispositivos
+          </Link>
         </div>
         <button
           onClick={handleLogout}
