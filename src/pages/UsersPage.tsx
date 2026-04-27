@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUsers, useDeleteUser } from '../hooks/useUsers';
+import { useRoles } from '../hooks/useRoles';
 import Layout from '../components/Layout';
 
 export default function UsersPage() {
   const { data: users, isLoading, error } = useUsers();
+  const { data: roles } = useRoles();
   const deleteMutation = useDeleteUser();
+
+  const rolesMap = new Map(roles?.map((r) => [r.id, r.nombre]) ?? []);
   const navigate = useNavigate();
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [confirmId, setConfirmId] = useState<number | null>(null);
@@ -95,7 +99,7 @@ export default function UsersPage() {
                     <td style={tdStyle}>{user.correo}</td>
                     <td style={tdStyle}>
                       <span style={badgeStyle('#dbeafe', '#1e40af')}>
-                        {user.rol?.nombre ?? user.rol_id}
+                        {user.rol?.nombre ?? rolesMap.get(user.rol_id) ?? user.rol_id}
                       </span>
                     </td>
                     <td style={tdStyle}>
