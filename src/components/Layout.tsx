@@ -1,10 +1,25 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { getTokenPayload } from '../lib/auth';
+import { LayoutDashboard, Users, Building2, Smartphone, LogOut } from 'lucide-react';
 import type { ReactNode } from 'react';
+
+const NAV = [
+  { to: '/', icon: LayoutDashboard, label: 'Dashboard', exact: true },
+  { to: '/usuarios', icon: Users, label: 'Usuarios', exact: false },
+  { to: '/laboratorios', icon: Building2, label: 'Laboratorios', exact: false },
+  { to: '/dispositivos', icon: Smartphone, label: 'Dispositivos', exact: false },
+];
 
 export default function Layout({ children }: { children: ReactNode }) {
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const payload = getTokenPayload();
+  const userName =
+    payload?.nombre ?? payload?.name ?? payload?.given_name ??
+    (payload?.email ? payload.email.split('@')[0] : 'Usuario');
+  const userInitial = userName.charAt(0).toUpperCase();
 
   const handleLogout = () => {
     logout();
@@ -12,48 +27,90 @@ export default function Layout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f0f4f8', display: 'flex', flexDirection: 'column' }}>
-      <nav style={{
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      {/* ── Sidebar ── */}
+      <aside style={{
+        width: '240px',
         background: '#0d2137',
-        padding: '0 2rem',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        height: '60px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+        flexDirection: 'column',
+        flexShrink: 0,
+        position: 'fixed',
+        top: 0, left: 0,
+        height: '100vh',
+        zIndex: 100,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
-          <span style={{ color: '#4ecdc4', fontWeight: 700, fontSize: '1.1rem', letterSpacing: '0.5px' }}>
+        <div style={{
+          padding: '1.5rem 1.25rem 1.25rem',
+          borderBottom: '1px solid rgba(255,255,255,0.07)',
+          textAlign: 'center',
+        }}>
+          <img
+            src="/logo-lis.png"
+            alt="LIS"
+            style={{ maxHeight: '60px', maxWidth: '100%', objectFit: 'contain', display: 'block', margin: '0 auto 10px' }}
+          />
+          <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.95rem', letterSpacing: '0.3px', margin: 0 }}>
             Sistema LIS
-          </span>
-          <Link to="/usuarios" style={{ color: '#cbd5e0', textDecoration: 'none', fontSize: '0.9rem' }}>
-            Usuarios
-          </Link>
-          <Link to="/laboratorios" style={{ color: '#cbd5e0', textDecoration: 'none', fontSize: '0.9rem' }}>
-            Laboratorios
-          </Link>
-          <Link to="/dispositivos" style={{ color: '#cbd5e0', textDecoration: 'none', fontSize: '0.9rem' }}>
-            Dispositivos
-          </Link>
+          </p>
         </div>
-        <button
-          onClick={handleLogout}
-          style={{
-            background: 'transparent',
-            border: '1px solid #4ecdc4',
-            color: '#4ecdc4',
-            padding: '6px 16px',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '0.85rem',
-          }}
-        >
-          Cerrar sesión
-        </button>
-      </nav>
-      <main style={{ flex: 1, padding: '2rem', maxWidth: '1100px', width: '100%', margin: '0 auto' }}>
-        {children}
-      </main>
+
+        <nav style={{ flex: 1, padding: '1rem 0.75rem', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+          {NAV.map(({ to, icon: Icon, label, exact }) => {
+            const isActive = exact
+              ? location.pathname === to
+              : location.pathname === to || location.pathname.startsWith(to + '/');
+            return (
+              <Link key={to} to={to} className={`nav-link${isActive ? ' active' : ''}`}>
+                <Icon size={18} strokeWidth={2} />
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div style={{ padding: '0.75rem', borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+          <button className="sidebar-btn" onClick={handleLogout}>
+            <LogOut size={18} strokeWidth={2} />
+            Cerrar sesión
+          </button>
+        </div>
+      </aside>
+
+      {/* ── Main ── */}
+      <div style={{ flex: 1, marginLeft: '240px', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <header style={{
+          background: '#fff',
+          borderBottom: '1px solid #e2e8f0',
+          padding: '0 2rem',
+          height: '60px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          gap: '12px',
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+          boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
+        }}>
+          <span style={{ color: '#64748b', fontSize: '0.88rem' }}>
+            Hola, <strong style={{ color: '#0d2137' }}>{userName}</strong>
+          </span>
+          <div style={{
+            width: '34px', height: '34px',
+            background: 'linear-gradient(135deg, #5bc8c0, #2a7d7b)',
+            borderRadius: '50%',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: '#fff', fontWeight: 700, fontSize: '0.88rem', flexShrink: 0,
+          }}>
+            {userInitial}
+          </div>
+        </header>
+
+        <main style={{ flex: 1, padding: '2rem', background: '#f0fafa' }}>
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

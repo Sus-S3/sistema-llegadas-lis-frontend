@@ -20,69 +20,81 @@ export default function LoginPage() {
   }, [loggedIn, navigate]);
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #0d2137 0%, #1a3a5c 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      {/* Left panel */}
       <div style={{
-        background: '#ffffff',
-        borderRadius: '16px',
-        padding: '3rem 2.5rem',
-        width: '100%',
-        maxWidth: '420px',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
-        textAlign: 'center',
+        flex: 1,
+        background: 'linear-gradient(150deg, #0d2137 0%, #2a7d7b 100%)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '3rem 2rem',
       }}>
-        <div style={{
-          width: '64px',
-          height: '64px',
-          background: 'linear-gradient(135deg, #0d2137, #4ecdc4)',
-          borderRadius: '50%',
-          margin: '0 auto 1.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+        <img
+          src="/logo-lis.png"
+          alt="LIS"
+          style={{ width: '130px', marginBottom: '2rem', filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.3))' }}
+        />
+        <h1 style={{
+          color: '#fff', fontSize: '1.9rem', fontWeight: 800,
+          textAlign: 'center', marginBottom: '0.75rem', lineHeight: 1.2,
         }}>
-          <span style={{ fontSize: '1.8rem' }}>🏫</span>
-        </div>
-
-        <h1 style={{ color: '#0d2137', fontSize: '1.6rem', fontWeight: 700, marginBottom: '0.5rem' }}>
-          Sistema de Llegadas
+          Sistema de Llegadas LIS
         </h1>
-        <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '2.5rem' }}>
-          LIS — Inicio de sesión
+        <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.95rem', textAlign: 'center', maxWidth: '300px', lineHeight: 1.6 }}>
+          Laboratorio de Ingeniería de Sistemas — UdeA
         </p>
+      </div>
 
-        <a
-          href={`${import.meta.env.VITE_API_URL}/auth/google`}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '12px',
-            background: '#0d2137',
-            color: '#ffffff',
-            padding: '14px 24px',
-            borderRadius: '10px',
-            textDecoration: 'none',
-            fontWeight: 600,
-            fontSize: '0.95rem',
-            transition: 'background 0.2s',
-            border: '2px solid #4ecdc4',
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.background = '#1a3a5c')}
-          onMouseLeave={(e) => (e.currentTarget.style.background = '#0d2137')}
-        >
-          <GoogleIcon />
-          Iniciar sesión con Google
-        </a>
+      {/* Right panel */}
+      <div style={{
+        width: '460px',
+        background: '#fff',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '3rem 2.5rem',
+      }}>
+        <div style={{ width: '100%', maxWidth: '340px' }}>
+          <h2 style={{ color: '#0d2137', fontSize: '1.9rem', fontWeight: 800, marginBottom: '8px' }}>
+            Bienvenido
+          </h2>
+          <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '2.5rem' }}>
+            Inicia sesión con tu cuenta institucional
+          </p>
 
-        <p style={{ color: '#94a3b8', fontSize: '0.78rem', marginTop: '2rem' }}>
-          Solo cuentas institucionales autorizadas
-        </p>
+          <a
+            href={`${import.meta.env.VITE_API_URL}/auth/google`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              background: 'linear-gradient(135deg, #5bc8c0, #2a7d7b)',
+              color: '#fff',
+              padding: '14px 24px',
+              borderRadius: '10px',
+              textDecoration: 'none',
+              fontWeight: 700,
+              fontSize: '1rem',
+              boxShadow: '0 4px 16px rgba(91,200,192,0.35)',
+              width: '100%',
+              boxSizing: 'border-box',
+              transition: 'opacity 0.2s, transform 0.1s',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'translateY(0)'; }}
+          >
+            <GoogleIcon />
+            Iniciar sesión con Google
+          </a>
+
+          <p style={{ color: '#94a3b8', fontSize: '0.78rem', marginTop: '2.5rem', textAlign: 'center' }}>
+            Universidad de Antioquia
+          </p>
+        </div>
       </div>
     </div>
   );
