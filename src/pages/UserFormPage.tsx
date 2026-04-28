@@ -2,19 +2,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useUser, useCreateUser, useUpdateUser } from '../hooks/useUsers';
 import { useEstados } from '../hooks/useEstados';
+import { useRoles } from '../hooks/useRoles';
 import Layout from '../components/Layout';
 import type { UserFormData } from '../types';
-
-const ROLES = [
-  { id: 1, nombre: 'Administrador' },
-  { id: 2, nombre: 'Auxiliar administrativo' },
-  { id: 3, nombre: 'Auxiliar de programación' },
-];
 
 const initialForm: UserFormData = {
   nombre: '',
   correo: '',
-  rol_id: 1,
+  rol_id: 0,
   estado_id: 1,
 };
 
@@ -25,6 +20,7 @@ export default function UserFormPage() {
 
   const navigate = useNavigate();
   const { data: existingUser, isLoading: loadingUser, error: loadError } = useUser(userId);
+  const { data: roles, isLoading: loadingRoles } = useRoles();
   const { data: estados, isLoading: loadingEstados } = useEstados();
   const createMutation = useCreateUser();
   const updateMutation = useUpdateUser(userId);
@@ -38,10 +34,16 @@ export default function UserFormPage() {
     setForm({
       nombre: existingUser.nombre,
       correo: existingUser.correo,
-      rol_id: existingUser.rol_id ?? existingUser.rol?.id ?? 1,
-      estado_id: existingUser.estado_id ?? existingUser.estado?.id ?? 1,
+      rol_id: Number(existingUser.rol_id),
+      estado_id: Number(existingUser.estado_id),
     });
   }, [existingUser]);
+
+  useEffect(() => {
+    if (!isEdit && roles && roles.length > 0 && form.rol_id === 0) {
+      setForm((prev) => ({ ...prev, rol_id: roles[0].id_roles }));
+    }
+  }, [roles, isEdit]);
 
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof UserFormData, string>> = {};
@@ -73,7 +75,7 @@ export default function UserFormPage() {
     setSubmitError(null);
     try {
       if (isEdit) {
-        await updateMutation.mutateAsync({ nombre: form.nombre, rol_id: form.rol_id, estado_id: form.estado_id });
+        await updateMutation.mutateAsync({ nombre: form.nombre, rol_id: Number(form.rol_id), estado_id: Number(form.estado_id) });
       } else {
         await createMutation.mutateAsync(form);
       }
@@ -149,9 +151,9 @@ export default function UserFormPage() {
 
           <div className="form-field">
             <label className="form-label">Rol</label>
-            <select name="rol_id" value={form.rol_id} onChange={handleChange} className="form-input">
-              {ROLES.map((r) => (
-                <option key={r.id} value={r.id}>{r.nombre}</option>
+            <select name="rol_id" value={form.rol_id} onChange={handleChange} disabled={loadingRoles} className="form-input">
+              {roles?.map((r) => (
+                <option key={r.id_roles} value={r.id_roles}>{r.nombre}</option>
               ))}
             </select>
           </div>
