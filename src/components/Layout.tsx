@@ -16,9 +16,11 @@ export default function Layout({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const payload = getTokenPayload();
-  const userName =
-    payload?.nombre ?? payload?.name ?? payload?.given_name ??
-    (payload?.email ? payload.email.split('@')[0] : 'Usuario');
+  const correo = payload?.correo ?? '';
+  const emailName = correo.split('@')[0];
+  const userName = emailName
+    ? emailName.split('.').map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join(' ')
+    : 'Usuario';
   const userInitial = userName.charAt(0).toUpperCase();
 
   const handleLogout = () => {
@@ -45,11 +47,13 @@ export default function Layout({ children }: { children: ReactNode }) {
           borderBottom: '1px solid rgba(255,255,255,0.07)',
           textAlign: 'center',
         }}>
-          <img
-            src="/logo-lis.png"
-            alt="LIS"
-            style={{ maxHeight: '60px', maxWidth: '100%', objectFit: 'contain', display: 'block', margin: '0 auto 10px' }}
-          />
+          <div style={{
+            width: 56, height: 56, borderRadius: '50%',
+            background: '#5bc8c0',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 18, fontWeight: 'bold', color: '#0d2137',
+            margin: '0 auto 10px',
+          }}>LIS</div>
           <p style={{ color: '#fff', fontWeight: 700, fontSize: '0.95rem', letterSpacing: '0.3px', margin: 0 }}>
             Sistema LIS
           </p>

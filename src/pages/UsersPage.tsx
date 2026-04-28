@@ -25,7 +25,7 @@ export default function UsersPage() {
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [search, setSearch] = useState('');
 
-  const rolesMap = new Map(roles?.map((r) => [r.id_roles, r.nombre]) ?? []);
+  const rolesMap = new Map(roles?.map((r) => [Number(r.id_roles), r.nombre]) ?? []);
 
   const filtered = users?.filter((u) => {
     if (!search.trim()) return true;
@@ -78,7 +78,7 @@ export default function UsersPage() {
       ) : (
         <div className="card-grid">
           {filtered.map((user) => {
-            const rolName = user.rol?.nombre ?? rolesMap.get(user.rol_id) ?? `Rol ${user.rol_id}`;
+            const rolName = user.rol?.nombre ?? rolesMap.get(Number(user.rol_id)) ?? `Rol ${user.rol_id}`;
             const rolColors = ROLE_COLORS[user.rol_id] ?? { bg: '#e2e8f0', color: '#374151' };
             const statusColors = STATUS_COLORS[user.estado_id] ?? { bg: '#fef3c7', color: '#92400e' };
             const statusName = user.estado?.nombre ?? (user.estado_id === 1 ? 'Activo' : 'Inactivo');
