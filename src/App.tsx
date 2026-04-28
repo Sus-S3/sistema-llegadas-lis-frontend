@@ -11,6 +11,7 @@ import DispositivosPage from './pages/DispositivosPage';
 import DispositivoFormPage from './pages/DispositivoFormPage';
 import TarjetasPage from './pages/TarjetasPage';
 import TarjetaFormPage from './pages/TarjetaFormPage';
+import AsistenciaPage from './pages/AsistenciaPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -64,6 +65,9 @@ export default function App() {
             } />
             <Route path="/tarjetas/editar/:id" element={
               <ProtectedRoute><TarjetaFormPage /></ProtectedRoute>
+            } />
+            <Route path="/asistencia" element={
+              <ProtectedRoute><AsistenciaPage /></ProtectedRoute>
             } />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>

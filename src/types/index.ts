@@ -74,3 +74,13 @@ export interface TarjetaFormData {
   usuario_id: number | null;
   estado_id: number;
 }
+
+export interface Asistencia {
+  id_asistencia: number;
+  tarjeta_id: number;
+  usuario_id: number;
+  fecha_hora: string;
+  tipo: string;
+  usuario?: { id_usuario: number; nombre: string; correo: string };
+  tarjeta?: { id_tarjeta: number; uid_nfc: string };
+}
