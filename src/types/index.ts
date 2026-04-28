@@ -59,3 +59,18 @@ export interface DispositivoFormData {
   laboratorio_id: number;
   estado_id: number;
 }
+
+export interface Tarjeta {
+  id_tarjeta: number;
+  uid_nfc: string;
+  usuario_id: number | null;
+  estado_id: number;
+  usuario?: { id_usuario: number; nombre: string; correo: string };
+  estado?: { id_estados: number; nombre: string };
+}
+
+export interface TarjetaFormData {
+  uid_nfc: string;
+  usuario_id: number | null;
+  estado_id: number;
+}

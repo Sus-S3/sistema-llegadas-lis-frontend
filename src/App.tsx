@@ -9,6 +9,8 @@ import LaboratoriosPage from './pages/LaboratoriosPage';
 import LaboratorioFormPage from './pages/LaboratorioFormPage';
 import DispositivosPage from './pages/DispositivosPage';
 import DispositivoFormPage from './pages/DispositivoFormPage';
+import TarjetasPage from './pages/TarjetasPage';
+import TarjetaFormPage from './pages/TarjetaFormPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,6 +55,15 @@ export default function App() {
             } />
             <Route path="/dispositivos/:id/editar" element={
               <ProtectedRoute><DispositivoFormPage /></ProtectedRoute>
+            } />
+            <Route path="/tarjetas" element={
+              <ProtectedRoute><TarjetasPage /></ProtectedRoute>
+            } />
+            <Route path="/tarjetas/nueva" element={
+              <ProtectedRoute><TarjetaFormPage /></ProtectedRoute>
+            } />
+            <Route path="/tarjetas/editar/:id" element={
+              <ProtectedRoute><TarjetaFormPage /></ProtectedRoute>
             } />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
