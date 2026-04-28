@@ -22,7 +22,7 @@ export interface UserUpdateData {
 }
 
 export interface Role {
-  id: number;
+  id_roles: number;
   nombre: string;
 }
 

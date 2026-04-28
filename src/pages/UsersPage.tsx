@@ -9,7 +9,7 @@ export default function UsersPage() {
   const { data: roles } = useRoles();
   const deleteMutation = useDeleteUser();
 
-  const rolesMap = new Map(roles?.map((r) => [r.id, r.nombre]) ?? []);
+  const rolesMap = new Map(roles?.map((r) => [r.id_roles, r.nombre]) ?? []);
   console.log('roles:', roles);
   console.log('rolesMap:', rolesMap);
   const navigate = useNavigate();
