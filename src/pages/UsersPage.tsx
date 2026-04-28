@@ -10,6 +10,8 @@ export default function UsersPage() {
   const deleteMutation = useDeleteUser();
 
   const rolesMap = new Map(roles?.map((r) => [r.id, r.nombre]) ?? []);
+  console.log('roles:', roles);
+  console.log('rolesMap:', rolesMap);
   const navigate = useNavigate();
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [confirmId, setConfirmId] = useState<number | null>(null);
@@ -89,8 +91,9 @@ export default function UsersPage() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, i) => (
-                  <tr key={user.id_usuarios} style={{
+                {users.map((user, i) => {
+                  console.log('rol_id:', user.rol_id, 'nombre:', rolesMap.get(user.rol_id));
+                  return (<tr key={user.id_usuarios} style={{
                     background: i % 2 === 0 ? '#ffffff' : '#f8fafc',
                     borderBottom: '1px solid #e2e8f0',
                   }}>
@@ -146,7 +149,7 @@ export default function UsersPage() {
                       )}
                     </td>
                   </tr>
-                ))}
+                ); })}
               </tbody>
             </table>
           )}
