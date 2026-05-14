@@ -75,6 +75,28 @@ export interface TarjetaFormData {
   estado_id: number;
 }
 
+export interface Horario {
+  id_horarios: number;
+  usuario_id: number;
+  laboratorio_id: number;
+  dia_semana: string;
+  hora_inicio: string;
+  hora_fin: string;
+  estado_id: number;
+  usuario?: { id_usuarios: number; nombre: string; correo: string };
+  laboratorio?: { id_laboratorios: number; nombre: string };
+  estado?: { id: number; nombre: string };
+}
+
+export interface HorarioFormData {
+  usuario_id: number;
+  laboratorio_id: number;
+  dia_semana: string;
+  hora_inicio: string;
+  hora_fin: string;
+  estado_id: number;
+}
+
 export interface Asistencia {
   id_asistencia: number;
   tarjeta_id: number;

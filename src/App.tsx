@@ -12,6 +12,8 @@ import DispositivoFormPage from './pages/DispositivoFormPage';
 import TarjetasPage from './pages/TarjetasPage';
 import TarjetaFormPage from './pages/TarjetaFormPage';
 import AsistenciaPage from './pages/AsistenciaPage';
+import HorariosPage from './pages/HorariosPage';
+import HorarioFormPage from './pages/HorarioFormPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,6 +70,15 @@ export default function App() {
             } />
             <Route path="/asistencia" element={
               <ProtectedRoute><AsistenciaPage /></ProtectedRoute>
+            } />
+            <Route path="/horarios" element={
+              <ProtectedRoute><HorariosPage /></ProtectedRoute>
+            } />
+            <Route path="/horarios/nuevo" element={
+              <ProtectedRoute><HorarioFormPage /></ProtectedRoute>
+            } />
+            <Route path="/horarios/:id/editar" element={
+              <ProtectedRoute><HorarioFormPage /></ProtectedRoute>
             } />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
