@@ -14,6 +14,7 @@ import TarjetaFormPage from './pages/TarjetaFormPage';
 import AsistenciaPage from './pages/AsistenciaPage';
 import HorariosPage from './pages/HorariosPage';
 import HorarioFormPage from './pages/HorarioFormPage';
+import RegistroPage from './pages/RegistroPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -79,6 +80,9 @@ export default function App() {
             } />
             <Route path="/horarios/:id/editar" element={
               <ProtectedRoute><HorarioFormPage /></ProtectedRoute>
+            } />
+            <Route path="/registro" element={
+              <ProtectedRoute><RegistroPage /></ProtectedRoute>
             } />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>

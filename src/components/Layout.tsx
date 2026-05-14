@@ -1,7 +1,7 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getTokenPayload } from '../lib/auth';
-import { LayoutDashboard, Users, Building2, Smartphone, CreditCard, ClipboardList, Calendar, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Building2, Smartphone, CreditCard, ClipboardList, Calendar, ScanLine, LogOut } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 const NAV = [
@@ -12,6 +12,7 @@ const NAV = [
   { to: '/tarjetas', icon: CreditCard, label: 'Tarjetas', exact: false },
   { to: '/asistencia', icon: ClipboardList, label: 'Asistencia', exact: false },
   { to: '/horarios', icon: Calendar, label: 'Horarios', exact: false },
+  { to: '/registro', icon: ScanLine, label: 'Registro', exact: false },
 ];
 
 export default function Layout({ children }: { children: ReactNode }) {
