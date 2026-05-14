@@ -40,6 +40,7 @@ export default function TarjetaFormPage() {
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof TarjetaFormData, string>> = {};
     if (!form.uid_nfc.trim()) newErrors.uid_nfc = 'El UID NFC es obligatorio';
+    if (!isEdit && !form.usuario_id) newErrors.usuario_id = 'El usuario es obligatorio';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -58,7 +59,7 @@ export default function TarjetaFormPage() {
     setSubmitError(null);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!validate()) return;
     setSubmitError(null);
@@ -126,19 +127,26 @@ export default function TarjetaFormPage() {
           </div>
 
           <div className="form-field">
-            <label className="form-label">Usuario asignado</label>
+            <label className="form-label">
+              Usuario asignado
+              {!isEdit && <span style={{ color: '#e53e3e', marginLeft: '2px' }}>*</span>}
+            </label>
             <select
               name="usuario_id"
               value={form.usuario_id ?? ''}
               onChange={handleChange}
               disabled={loadingUsuarios}
-              className="form-input"
+              className={`form-input${errors.usuario_id ? ' has-error' : ''}`}
             >
-              <option value="">Sin asignar</option>
+              {isEdit
+                ? <option value="">Sin asignar</option>
+                : <option value="" disabled>Selecciona un usuario</option>
+              }
               {usuarios?.map((u) => (
                 <option key={u.id_usuarios} value={u.id_usuarios}>{u.nombre}</option>
               ))}
             </select>
+            {errors.usuario_id && <p className="form-error">{errors.usuario_id}</p>}
           </div>
 
           <div className="form-field">
