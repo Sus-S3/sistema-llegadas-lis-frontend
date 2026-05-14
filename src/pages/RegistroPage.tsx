@@ -22,6 +22,7 @@ interface MarcarResponse {
   tipo?: string;
   estado_asistencia?: string;
   puntualidad?: string;
+  clasificacion?: string;
   fecha_hora?: string;
   ya_registrado?: boolean;
 }
@@ -102,7 +103,7 @@ export default function RegistroPage() {
       const { data } = await api.post<MarcarResponse>('/asistencia/marcar', { uid_nfc: uid });
       const nombre = data.usuario?.nombre ?? data.nombre ?? 'Usuario desconocido';
       const correo = data.usuario?.correo ?? data.correo;
-      const estadoRaw = data.estado_asistencia ?? data.puntualidad;
+      const estadoRaw = data.estado_asistencia ?? data.puntualidad ?? data.clasificacion;
       setResult({
         uid,
         nombre,
