@@ -7,7 +7,7 @@ interface FiltrosAsistencia {
   fecha?: string;
 }
 
-export function useAsistencia(filtros?: FiltrosAsistencia) {
+export function useAsistencia(filtros?: FiltrosAsistencia, enabled = true) {
   return useQuery<Asistencia[]>({
     queryKey: ['asistencia', filtros],
     queryFn: async () => {
@@ -17,5 +17,6 @@ export function useAsistencia(filtros?: FiltrosAsistencia) {
       const { data } = await api.get('/asistencia', { params });
       return data;
     },
+    enabled,
   });
 }

@@ -15,6 +15,8 @@ import AsistenciaPage from './pages/AsistenciaPage';
 import HorariosPage from './pages/HorariosPage';
 import HorarioFormPage from './pages/HorarioFormPage';
 import RegistroPage from './pages/RegistroPage';
+import JustificacionesPage from './pages/JustificacionesPage';
+import JustificacionFormPage from './pages/JustificacionFormPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -83,6 +85,12 @@ export default function App() {
             } />
             <Route path="/registro" element={
               <ProtectedRoute><RegistroPage /></ProtectedRoute>
+            } />
+            <Route path="/justificaciones" element={
+              <ProtectedRoute><JustificacionesPage /></ProtectedRoute>
+            } />
+            <Route path="/justificaciones/nueva" element={
+              <ProtectedRoute><JustificacionFormPage /></ProtectedRoute>
             } />
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>

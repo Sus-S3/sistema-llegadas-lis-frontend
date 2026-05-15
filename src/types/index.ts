@@ -103,6 +103,28 @@ export interface Asistencia {
   usuario_id: number;
   fecha_hora: string;
   tipo: string;
+  clasificacion?: string;
   usuario?: { id_usuario: number; nombre: string; correo: string };
   tarjeta?: { id_tarjeta: number; uid_nfc: string };
+}
+
+export interface Justificacion {
+  id_justificaciones: number;
+  usuario_id: number;
+  asistencia_id: number;
+  motivo: string;
+  estado: 'Pendiente' | 'Aprobada' | 'Rechazada';
+  fecha_solicitud: string;
+  usuario?: { id_usuarios: number; nombre: string; correo: string };
+  asistencia?: { id_asistencia: number; fecha_hora: string; clasificacion?: string };
+}
+
+export interface JustificacionFormData {
+  usuario_id: number;
+  asistencia_id: number;
+  motivo: string;
+}
+
+export interface RevisarJustificacionPayload {
+  estado: 'Aprobada' | 'Rechazada';
 }
