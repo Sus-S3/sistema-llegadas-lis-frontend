@@ -47,43 +47,43 @@ export default function App() {
               <ProtectedRoute><UserFormPage /></ProtectedRoute>
             } />
             <Route path="/laboratorios" element={
-              <ProtectedRoute><LaboratoriosPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><LaboratoriosPage /></ProtectedRoute>
             } />
             <Route path="/laboratorios/nuevo" element={
-              <ProtectedRoute><LaboratorioFormPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><LaboratorioFormPage /></ProtectedRoute>
             } />
             <Route path="/laboratorios/:id/editar" element={
-              <ProtectedRoute><LaboratorioFormPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><LaboratorioFormPage /></ProtectedRoute>
             } />
             <Route path="/dispositivos" element={
-              <ProtectedRoute><DispositivosPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><DispositivosPage /></ProtectedRoute>
             } />
             <Route path="/dispositivos/nuevo" element={
-              <ProtectedRoute><DispositivoFormPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><DispositivoFormPage /></ProtectedRoute>
             } />
             <Route path="/dispositivos/:id/editar" element={
-              <ProtectedRoute><DispositivoFormPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><DispositivoFormPage /></ProtectedRoute>
             } />
             <Route path="/tarjetas" element={
-              <ProtectedRoute><TarjetasPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><TarjetasPage /></ProtectedRoute>
             } />
             <Route path="/tarjetas/nueva" element={
-              <ProtectedRoute><TarjetaFormPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><TarjetaFormPage /></ProtectedRoute>
             } />
             <Route path="/tarjetas/editar/:id" element={
-              <ProtectedRoute><TarjetaFormPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><TarjetaFormPage /></ProtectedRoute>
             } />
             <Route path="/asistencia" element={
               <ProtectedRoute><AsistenciaPage /></ProtectedRoute>
             } />
             <Route path="/horarios" element={
-              <ProtectedRoute><HorariosPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><HorariosPage /></ProtectedRoute>
             } />
             <Route path="/horarios/nuevo" element={
-              <ProtectedRoute><HorarioFormPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><HorarioFormPage /></ProtectedRoute>
             } />
             <Route path="/horarios/:id/editar" element={
-              <ProtectedRoute><HorarioFormPage /></ProtectedRoute>
+              <ProtectedRoute adminOnly><HorarioFormPage /></ProtectedRoute>
             } />
             <Route path="/registro" element={
               <ProtectedRoute><RegistroPage /></ProtectedRoute>

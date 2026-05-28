@@ -4,6 +4,10 @@ import { getTokenPayload } from '../lib/auth';
 import { Users, Building2, Smartphone, CreditCard, ClipboardList, Calendar, ScanLine, FileText, RefreshCw, LogOut } from 'lucide-react';
 import type { ReactNode } from 'react';
 
+const ADMIN_ROL_ID = 6;
+
+const ADMIN_ONLY_ROUTES = new Set(['/laboratorios', '/dispositivos', '/tarjetas', '/horarios']);
+
 const NAV = [
   { to: '/usuarios', icon: Users, label: 'Usuarios', exact: false },
   { to: '/laboratorios', icon: Building2, label: 'Laboratorios', exact: false },
@@ -17,7 +21,10 @@ const NAV = [
 ];
 
 export default function Layout({ children }: { children: ReactNode }) {
-  const { logout } = useAuth();
+  const { logout, rolId } = useAuth();
+  const visibleNav = rolId === ADMIN_ROL_ID
+    ? NAV
+    : NAV.filter(({ to }) => !ADMIN_ONLY_ROUTES.has(to));
   const navigate = useNavigate();
   const location = useLocation();
   const payload = getTokenPayload();
@@ -65,7 +72,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
 
         <nav style={{ flex: 1, padding: '1rem 0.75rem', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-          {NAV.map(({ to, icon: Icon, label, exact }) => {
+          {visibleNav.map(({ to, icon: Icon, label, exact }) => {
             const isActive = exact
               ? location.pathname === to
               : location.pathname === to || location.pathname.startsWith(to + '/');
