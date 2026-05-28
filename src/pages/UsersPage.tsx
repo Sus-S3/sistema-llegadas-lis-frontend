@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUsers, useDeleteUser } from '../hooks/useUsers';
 import { useRoles } from '../hooks/useRoles';
+import { useAuth } from '../contexts/AuthContext';
 import Layout from '../components/Layout';
 import { Users, Plus, Search, Pencil, Trash2 } from 'lucide-react';
 
@@ -17,6 +18,7 @@ const STATUS_COLORS: Record<number, { bg: string; color: string }> = {
 };
 
 export default function UsersPage() {
+  const { rolId } = useAuth();
   const { data: users, isLoading, error } = useUsers();
   const { data: roles } = useRoles();
   const deleteMutation = useDeleteUser();
@@ -112,7 +114,7 @@ export default function UsersPage() {
                   </div>
 
                   <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', display: 'flex', justifyContent: 'flex-end', gap: '2px' }}>
-                    {confirmId === user.id_usuarios ? (
+                    {rolId === 6 && (confirmId === user.id_usuarios ? (
                       <div className="confirm-row">
                         <span style={{ fontSize: '0.78rem', color: '#64748b' }}>¿Eliminar?</span>
                         <button className="btn-confirm-yes" onClick={() => handleDelete(user.id_usuarios)} disabled={deletingId === user.id_usuarios}>
@@ -129,7 +131,7 @@ export default function UsersPage() {
                           <Trash2 size={15} />
                         </button>
                       </>
-                    )}
+                    ))}
                   </div>
                 </div>
               </div>
