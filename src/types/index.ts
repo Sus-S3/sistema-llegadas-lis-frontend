@@ -129,3 +129,27 @@ export interface JustificacionFormData {
 export interface RevisarJustificacionPayload {
   estado: 'Aprobada' | 'Rechazada';
 }
+
+export interface Reemplazo {
+  id_reemplazos: number;
+  solicitante_id: number;
+  reemplazante_id: number;
+  horario_id: number;
+  motivo: string;
+  estado: { nombre: string };
+  fecha_solicitud: string;
+  solicitante?: { id_usuarios: number; nombre: string; correo: string };
+  reemplazante?: { id_usuarios: number; nombre: string; correo: string };
+  horario?: { id_horarios: number; dia_semana: string; hora_inicio: string; hora_fin: string };
+}
+
+export interface ReemplazoFormData {
+  solicitante_id: number;
+  reemplazante_id: number;
+  horario_id: number;
+  motivo: string;
+}
+
+export interface RevisarReemplazoPayload {
+  estado: 'Aprobado' | 'Rechazado';
+}

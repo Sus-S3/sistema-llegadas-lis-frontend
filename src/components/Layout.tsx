@@ -1,7 +1,7 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getTokenPayload } from '../lib/auth';
-import { LayoutDashboard, Users, Building2, Smartphone, CreditCard, ClipboardList, Calendar, ScanLine, FileText, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Building2, Smartphone, CreditCard, ClipboardList, Calendar, ScanLine, FileText, RefreshCw, LogOut } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 const NAV = [
@@ -14,6 +14,7 @@ const NAV = [
   { to: '/horarios', icon: Calendar, label: 'Horarios', exact: false },
   { to: '/registro', icon: ScanLine, label: 'Registro', exact: false },
   { to: '/justificaciones', icon: FileText, label: 'Justificaciones', exact: false },
+  { to: '/reemplazos', icon: RefreshCw, label: 'Reemplazos', exact: false },
 ];
 
 export default function Layout({ children }: { children: ReactNode }) {
