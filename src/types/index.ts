@@ -29,6 +29,7 @@ export interface Role {
 export interface Estado {
   id_estados: number;
   nombre: string;
+  categoria_estado_id: number;
 }
 
 export interface Laboratorio {

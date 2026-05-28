@@ -25,7 +25,7 @@ function RevisarConfirm({ id, onDone }: { id: number; onDone: () => void }) {
   const revisado_por_id = parseInt(payload?.sub ?? '0', 10);
 
   const handle = async (nombreEstado: 'Aprobado' | 'Rechazado') => {
-    const estadoObj = estados?.find((e) => e.nombre === nombreEstado);
+    const estadoObj = estados?.find((e) => e.nombre === nombreEstado && e.categoria_estado_id === 5);
     if (!estadoObj) return;
     try {
       await revisar.mutateAsync({ estado_id: estadoObj.id_estados, revisado_por_id });
