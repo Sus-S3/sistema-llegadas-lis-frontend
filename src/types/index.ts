@@ -128,7 +128,8 @@ export interface JustificacionFormData {
 }
 
 export interface RevisarJustificacionPayload {
-  estado: 'Aprobada' | 'Rechazada';
+  estado_id: number;
+  revisado_por_id: number;
 }
 
 export interface Reemplazo {

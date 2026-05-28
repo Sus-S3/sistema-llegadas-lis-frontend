@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { FileText, Plus, Trash2, ClipboardCheck } from 'lucide-react';
 import Layout from '../components/Layout';
 import { useJustificaciones, useDeleteJustificacion, useRevisarJustificacion } from '../hooks/useJustificaciones';
-import type { RevisarJustificacionPayload } from '../types';
+import { useEstados } from '../hooks/useEstados';
+import { getTokenPayload } from '../lib/auth';
 
 const ESTADO_BADGE: Record<string, { bg: string; color: string }> = {
   Pendiente:  { bg: '#fef3c7', color: '#92400e' },
@@ -21,17 +22,24 @@ const formatFechaHora = (iso: string) => {
   return `${fecha}, ${hora}`;
 };
 
-// Sub-componente que instancia useRevisarJustificacion con un id fijo
 function RevisarConfirm({ id, onDone }: { id: number; onDone: () => void }) {
   const revisar = useRevisarJustificacion(id);
+  const { data: estados } = useEstados();
 
-  const handle = async (estado: RevisarJustificacionPayload['estado']) => {
+  const payload = getTokenPayload();
+  const revisado_por_id = parseInt(payload?.sub ?? '0', 10);
+
+  const handle = async (nombreEstado: 'Aprobada' | 'Rechazada') => {
+    const estadoObj = estados?.find((e) => e.nombre === nombreEstado && e.categoria_estado_id === 3);
+    if (!estadoObj) return;
     try {
-      await revisar.mutateAsync({ estado });
+      await revisar.mutateAsync({ estado_id: estadoObj.id_estados, revisado_por_id });
     } finally {
       onDone();
     }
   };
+
+  const ready = !!estados && revisado_por_id > 0;
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
@@ -39,14 +47,14 @@ function RevisarConfirm({ id, onDone }: { id: number; onDone: () => void }) {
       <button
         className="btn-confirm-yes"
         onClick={() => handle('Aprobada')}
-        disabled={revisar.isPending}
+        disabled={revisar.isPending || !ready}
       >
         {revisar.isPending ? '...' : 'Aprobar'}
       </button>
       <button
         className="btn-confirm-no"
         onClick={() => handle('Rechazada')}
-        disabled={revisar.isPending}
+        disabled={revisar.isPending || !ready}
         style={{ background: '#fee2e2', color: '#991b1b', border: '1px solid #fca5a5' }}
       >
         {revisar.isPending ? '...' : 'Rechazar'}

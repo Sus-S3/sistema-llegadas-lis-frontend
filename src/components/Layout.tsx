@@ -1,11 +1,10 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getTokenPayload } from '../lib/auth';
-import { LayoutDashboard, Users, Building2, Smartphone, CreditCard, ClipboardList, Calendar, ScanLine, FileText, RefreshCw, LogOut } from 'lucide-react';
+import { Users, Building2, Smartphone, CreditCard, ClipboardList, Calendar, ScanLine, FileText, RefreshCw, LogOut } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 const NAV = [
-  { to: '/', icon: LayoutDashboard, label: 'Dashboard', exact: true },
   { to: '/usuarios', icon: Users, label: 'Usuarios', exact: false },
   { to: '/laboratorios', icon: Building2, label: 'Laboratorios', exact: false },
   { to: '/dispositivos', icon: Smartphone, label: 'Dispositivos', exact: false },
