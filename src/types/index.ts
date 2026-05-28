@@ -113,10 +113,11 @@ export interface Justificacion {
   usuario_id: number;
   asistencia_id: number;
   motivo: string;
-  estado: 'Pendiente' | 'Aprobada' | 'Rechazada';
+  estado: { nombre: string };
   fecha_solicitud: string;
   usuario?: { id_usuarios: number; nombre: string; correo: string };
   asistencia?: { id_asistencia: number; fecha_hora: string; clasificacion?: string };
+  revisado_por?: { nombre: string } | null;
 }
 
 export interface JustificacionFormData {

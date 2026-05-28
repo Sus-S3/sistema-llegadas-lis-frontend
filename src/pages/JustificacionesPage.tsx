@@ -121,7 +121,8 @@ export default function JustificacionesPage() {
             </thead>
             <tbody>
               {justificaciones.map((j, i) => {
-                const estadoBadge = ESTADO_BADGE[j.estado] ?? { bg: '#f1f5f9', color: '#64748b' };
+                const estadoNombre = j.estado?.nombre ?? '';
+                const estadoBadge = ESTADO_BADGE[estadoNombre] ?? { bg: '#f1f5f9', color: '#64748b' };
                 return (
                   <tr key={j.id_justificaciones} style={{
                     background: i % 2 === 0 ? '#fff' : '#f8fafc',
@@ -169,7 +170,7 @@ export default function JustificacionesPage() {
                     </td>
                     <td style={tdStyle}>
                       <span className="badge" style={{ background: estadoBadge.bg, color: estadoBadge.color }}>
-                        {j.estado}
+                        {estadoNombre}
                       </span>
                     </td>
                     <td style={tdStyle}>
@@ -199,7 +200,7 @@ export default function JustificacionesPage() {
                         />
                       ) : (
                         <div style={{ display: 'flex', gap: '4px' }}>
-                          {j.estado === 'Pendiente' && (
+                          {estadoNombre === 'Pendiente' && (
                             <button
                               className="btn-icon edit"
                               title="Revisar"
