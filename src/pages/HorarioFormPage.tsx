@@ -229,7 +229,7 @@ export default function HorarioFormPage() {
               className="form-input"
             >
               {estados?.map((e) => (
-                <option key={e.id} value={e.id}>{e.nombre}</option>
+                <option key={e.id_estados} value={e.id_estados}>{e.nombre}</option>
               ))}
             </select>
           </div>

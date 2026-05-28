@@ -151,7 +151,7 @@ export default function DispositivoFormPage() {
             <label className="form-label">Estado</label>
             <select name="estado_id" value={form.estado_id} onChange={handleChange} disabled={loadingEstados} className="form-input">
               {estados?.map((e) => (
-                <option key={e.id} value={e.id}>{e.nombre}</option>
+                <option key={e.id_estados} value={e.id_estados}>{e.nombre}</option>
               ))}
             </select>
           </div>
