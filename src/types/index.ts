@@ -131,7 +131,7 @@ export interface RevisarJustificacionPayload {
 }
 
 export interface Reemplazo {
-  id_reemplazos: number;
+  id_reemplazo: number;
   solicitante_id: number;
   reemplazante_id: number;
   horario_id: number;

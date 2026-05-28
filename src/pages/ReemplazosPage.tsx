@@ -127,7 +127,7 @@ export default function ReemplazosPage() {
                 const estadoNombre = r.estado?.nombre ?? '';
                 const estadoBadge = ESTADO_BADGE[estadoNombre] ?? { bg: '#f1f5f9', color: '#64748b' };
                 return (
-                  <tr key={r.id_reemplazos} style={{
+                  <tr key={r.id_reemplazo} style={{
                     background: i % 2 === 0 ? '#fff' : '#f8fafc',
                     borderBottom: '1px solid #f1f5f9',
                   }}>
@@ -190,23 +190,23 @@ export default function ReemplazosPage() {
                       </span>
                     </td>
                     <td style={{ ...tdStyle, whiteSpace: 'nowrap' }}>
-                      {confirmDeleteId === r.id_reemplazos ? (
+                      {confirmDeleteId === r.id_reemplazo ? (
                         <div className="confirm-row">
                           <span style={{ fontSize: '0.78rem', color: '#64748b' }}>¿Eliminar?</span>
                           <button
                             className="btn-confirm-yes"
-                            onClick={() => handleDelete(r.id_reemplazos)}
-                            disabled={deletingId === r.id_reemplazos}
+                            onClick={() => handleDelete(r.id_reemplazo)}
+                            disabled={deletingId === r.id_reemplazo}
                           >
-                            {deletingId === r.id_reemplazos ? '...' : 'Sí'}
+                            {deletingId === r.id_reemplazo ? '...' : 'Sí'}
                           </button>
                           <button className="btn-confirm-no" onClick={() => setConfirmDeleteId(null)}>
                             No
                           </button>
                         </div>
-                      ) : revisarId === r.id_reemplazos ? (
+                      ) : revisarId === r.id_reemplazo ? (
                         <RevisarConfirm
-                          id={r.id_reemplazos}
+                          id={r.id_reemplazo}
                           onDone={() => setRevisarId(null)}
                         />
                       ) : (
@@ -215,7 +215,7 @@ export default function ReemplazosPage() {
                             <button
                               className="btn-icon edit"
                               title="Revisar"
-                              onClick={() => setRevisarId(r.id_reemplazos)}
+                              onClick={() => setRevisarId(r.id_reemplazo)}
                             >
                               <ClipboardCheck size={15} />
                             </button>
@@ -223,7 +223,7 @@ export default function ReemplazosPage() {
                           <button
                             className="btn-icon delete"
                             title="Eliminar"
-                            onClick={() => setConfirmDeleteId(r.id_reemplazos)}
+                            onClick={() => setConfirmDeleteId(r.id_reemplazo)}
                           >
                             <Trash2 size={15} />
                           </button>
