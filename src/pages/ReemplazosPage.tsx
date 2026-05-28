@@ -28,7 +28,7 @@ function RevisarConfirm({ id, onDone }: { id: number; onDone: () => void }) {
     const estadoObj = estados?.find((e) => e.nombre === nombreEstado);
     if (!estadoObj) return;
     try {
-      await revisar.mutateAsync({ estado_id: estadoObj.id, revisado_por_id });
+      await revisar.mutateAsync({ estado_id: estadoObj.id_estados, revisado_por_id });
     } finally {
       onDone();
     }

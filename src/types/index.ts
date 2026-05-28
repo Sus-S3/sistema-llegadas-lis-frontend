@@ -27,7 +27,7 @@ export interface Role {
 }
 
 export interface Estado {
-  id: number;
+  id_estados: number;
   nombre: string;
 }
 
