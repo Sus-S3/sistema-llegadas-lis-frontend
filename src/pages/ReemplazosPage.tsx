@@ -22,7 +22,7 @@ function RevisarConfirm({ id, onDone }: { id: number; onDone: () => void }) {
   const { data: estados } = useEstados();
 
   const payload = getTokenPayload();
-  const revisado_por_id = parseInt(payload?.id_usuarios ?? payload?.id ?? '0', 10);
+  const revisado_por_id = parseInt(payload?.sub ?? '0', 10);
 
   const handle = async (nombreEstado: 'Aprobado' | 'Rechazado') => {
     const estadoObj = estados?.find((e) => e.nombre === nombreEstado);
