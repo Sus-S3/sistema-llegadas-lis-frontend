@@ -132,7 +132,7 @@ export default function JustificacionesPage() {
                 const estadoNombre = j.estado?.nombre ?? '';
                 const estadoBadge = ESTADO_BADGE[estadoNombre] ?? { bg: '#f1f5f9', color: '#64748b' };
                 return (
-                  <tr key={j.id_justificaciones} style={{
+                  <tr key={j.id_justificacion} style={{
                     background: i % 2 === 0 ? '#fff' : '#f8fafc',
                     borderBottom: '1px solid #f1f5f9',
                   }}>
@@ -187,23 +187,23 @@ export default function JustificacionesPage() {
                       </span>
                     </td>
                     <td style={{ ...tdStyle, whiteSpace: 'nowrap' }}>
-                      {confirmDeleteId === j.id_justificaciones ? (
+                      {confirmDeleteId === j.id_justificacion ? (
                         <div className="confirm-row">
                           <span style={{ fontSize: '0.78rem', color: '#64748b' }}>¿Eliminar?</span>
                           <button
                             className="btn-confirm-yes"
-                            onClick={() => handleDelete(j.id_justificaciones)}
-                            disabled={deletingId === j.id_justificaciones}
+                            onClick={() => handleDelete(j.id_justificacion)}
+                            disabled={deletingId === j.id_justificacion}
                           >
-                            {deletingId === j.id_justificaciones ? '...' : 'Sí'}
+                            {deletingId === j.id_justificacion ? '...' : 'Sí'}
                           </button>
                           <button className="btn-confirm-no" onClick={() => setConfirmDeleteId(null)}>
                             No
                           </button>
                         </div>
-                      ) : revisarId === j.id_justificaciones ? (
+                      ) : revisarId === j.id_justificacion ? (
                         <RevisarConfirm
-                          id={j.id_justificaciones}
+                          id={j.id_justificacion}
                           onDone={() => setRevisarId(null)}
                         />
                       ) : (
@@ -212,7 +212,7 @@ export default function JustificacionesPage() {
                             <button
                               className="btn-icon edit"
                               title="Revisar"
-                              onClick={() => setRevisarId(j.id_justificaciones)}
+                              onClick={() => setRevisarId(j.id_justificacion)}
                             >
                               <ClipboardCheck size={15} />
                             </button>
@@ -220,7 +220,7 @@ export default function JustificacionesPage() {
                           <button
                             className="btn-icon delete"
                             title="Eliminar"
-                            onClick={() => setConfirmDeleteId(j.id_justificaciones)}
+                            onClick={() => setConfirmDeleteId(j.id_justificacion)}
                           >
                             <Trash2 size={15} />
                           </button>

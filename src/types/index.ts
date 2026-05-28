@@ -110,7 +110,7 @@ export interface Asistencia {
 }
 
 export interface Justificacion {
-  id_justificaciones: number;
+  id_justificacion: number;
   usuario_id: number;
   asistencia_id: number;
   motivo: string;
