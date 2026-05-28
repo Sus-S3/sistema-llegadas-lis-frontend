@@ -41,7 +41,7 @@ export default function UserFormPage() {
 
   useEffect(() => {
     if (!isEdit && roles && roles.length > 0 && form.rol_id === 0) {
-      setForm((prev) => ({ ...prev, rol_id: roles[0].id_roles }));
+      setForm((prev) => ({ ...prev, rol_id: roles[0].id }));
     }
   }, [roles, isEdit]);
 
@@ -153,7 +153,7 @@ export default function UserFormPage() {
             <label className="form-label">Rol</label>
             <select name="rol_id" value={form.rol_id} onChange={handleChange} disabled={loadingRoles} className="form-input">
               {roles?.map((r) => (
-                <option key={r.id_roles} value={r.id_roles}>{r.nombre}</option>
+                <option key={r.id} value={r.id}>{r.nombre}</option>
               ))}
             </select>
           </div>

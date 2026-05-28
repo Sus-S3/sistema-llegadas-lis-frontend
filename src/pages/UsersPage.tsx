@@ -25,7 +25,7 @@ export default function UsersPage() {
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [search, setSearch] = useState('');
 
-  const rolesMap = new Map(roles?.map((r) => [Number(r.id_roles), r.nombre]) ?? []);
+  const rolesMap = new Map(roles?.map((r) => [r.id, r.nombre]) ?? []);
 
   const filtered = users?.filter((u) => {
     if (!search.trim()) return true;
