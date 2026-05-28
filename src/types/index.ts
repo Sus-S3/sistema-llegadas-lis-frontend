@@ -151,5 +151,6 @@ export interface ReemplazoFormData {
 }
 
 export interface RevisarReemplazoPayload {
-  estado: 'Aprobado' | 'Rechazado';
+  estado_id: number;
+  revisado_por_id: number;
 }

@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { RefreshCw, Plus, Trash2, ClipboardCheck } from 'lucide-react';
 import Layout from '../components/Layout';
 import { useReemplazos, useDeleteReemplazo, useRevisarReemplazo } from '../hooks/useReemplazos';
-import type { RevisarReemplazoPayload } from '../types';
+import { useEstados } from '../hooks/useEstados';
+import { getTokenPayload } from '../lib/auth';
 
 const ESTADO_BADGE: Record<string, { bg: string; color: string }> = {
   Pendiente:  { bg: '#fef3c7', color: '#92400e' },
@@ -18,14 +19,22 @@ const formatHora = (t: string) => t.slice(0, 5);
 
 function RevisarConfirm({ id, onDone }: { id: number; onDone: () => void }) {
   const revisar = useRevisarReemplazo(id);
+  const { data: estados } = useEstados();
 
-  const handle = async (estado: RevisarReemplazoPayload['estado']) => {
+  const payload = getTokenPayload();
+  const revisado_por_id = parseInt(payload?.id_usuarios ?? payload?.id ?? '0', 10);
+
+  const handle = async (nombreEstado: 'Aprobado' | 'Rechazado') => {
+    const estadoObj = estados?.find((e) => e.nombre === nombreEstado);
+    if (!estadoObj) return;
     try {
-      await revisar.mutateAsync({ estado });
+      await revisar.mutateAsync({ estado_id: estadoObj.id, revisado_por_id });
     } finally {
       onDone();
     }
   };
+
+  const ready = !!estados && revisado_por_id > 0;
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
@@ -33,14 +42,14 @@ function RevisarConfirm({ id, onDone }: { id: number; onDone: () => void }) {
       <button
         className="btn-confirm-yes"
         onClick={() => handle('Aprobado')}
-        disabled={revisar.isPending}
+        disabled={revisar.isPending || !ready}
       >
         {revisar.isPending ? '...' : 'Aprobar'}
       </button>
       <button
         className="btn-confirm-no"
         onClick={() => handle('Rechazado')}
-        disabled={revisar.isPending}
+        disabled={revisar.isPending || !ready}
         style={{ background: '#fee2e2', color: '#991b1b', border: '1px solid #fca5a5' }}
       >
         {revisar.isPending ? '...' : 'Rechazar'}
