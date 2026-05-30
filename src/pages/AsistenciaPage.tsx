@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useAsistencia } from '../hooks/useAsistencia';
 import { useUsers } from '../hooks/useUsers';
+import { useAuth } from '../contexts/AuthContext';
 import Layout from '../components/Layout';
-import { ClipboardList, Search } from 'lucide-react';
+import api from '../lib/api';
+import { ClipboardList, Search, FileDown } from 'lucide-react';
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -21,15 +23,49 @@ const TIPO_COLORS: Record<string, { bg: string; color: string }> = {
 };
 
 export default function AsistenciaPage() {
+  const { rolId } = useAuth();
   const [fecha, setFecha] = useState(today());
   const [usuarioId, setUsuarioId] = useState<number | undefined>(undefined);
   const [filtrosActivos, setFiltrosActivos] = useState<{ fecha: string; usuario_id?: number }>({ fecha: today() });
+  const [downloading, setDownloading] = useState<'excel' | 'pdf' | null>(null);
 
   const { data: registros, isLoading, error } = useAsistencia(filtrosActivos);
   const { data: usuarios } = useUsers();
 
+  const isAdmin = rolId === 6;
+
   const aplicarFiltros = () => {
     setFiltrosActivos({ fecha, usuario_id: usuarioId });
+  };
+
+  const handleDownload = async (formato: 'excel' | 'pdf') => {
+    setDownloading(formato);
+    try {
+      const params: Record<string, string> = {};
+      if (filtrosActivos.fecha) {
+        params.fecha_inicio = filtrosActivos.fecha;
+        params.fecha_fin    = filtrosActivos.fecha;
+      }
+      if (filtrosActivos.usuario_id) {
+        params.usuario_id = String(filtrosActivos.usuario_id);
+      }
+      const endpoint = formato === 'excel'
+        ? '/reportes/asistencia/excel'
+        : '/reportes/asistencia/pdf';
+      const response = await api.get(endpoint, { params, responseType: 'blob' });
+      const url = URL.createObjectURL(response.data as Blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = formato === 'excel' ? 'asistencia.xlsx' : 'asistencia.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch {
+      // el interceptor de api ya normaliza el error; no hay estado de error específico para descarga
+    } finally {
+      setDownloading(null);
+    }
   };
 
   return (
@@ -86,6 +122,29 @@ export default function AsistenciaPage() {
         <button className="btn-primary" onClick={aplicarFiltros} style={{ marginBottom: '1px' }}>
           <Search size={15} /> Filtrar
         </button>
+
+        {isAdmin && (
+          <>
+            <button
+              className="btn-secondary"
+              onClick={() => handleDownload('excel')}
+              disabled={downloading !== null}
+              style={{ marginBottom: '1px' }}
+            >
+              <FileDown size={15} />
+              {downloading === 'excel' ? 'Descargando...' : 'Descargar Excel'}
+            </button>
+            <button
+              className="btn-secondary"
+              onClick={() => handleDownload('pdf')}
+              disabled={downloading !== null}
+              style={{ marginBottom: '1px' }}
+            >
+              <FileDown size={15} />
+              {downloading === 'pdf' ? 'Descargando...' : 'Descargar PDF'}
+            </button>
+          </>
+        )}
       </div>
 
       {error && <div className="alert-error">{(error as Error).message}</div>}
