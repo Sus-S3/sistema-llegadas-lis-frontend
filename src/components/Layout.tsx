@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 
 const ADMIN_ROL_ID = 6;
 
-const ADMIN_ONLY_ROUTES = new Set(['/laboratorios', '/dispositivos', '/tarjetas', '/horarios', '/registro']);
+const ADMIN_ONLY_ROUTES = new Set(['/laboratorios', '/dispositivos', '/tarjetas', '/registro']);
 
 const NAV = [
   { to: '/usuarios', icon: Users, label: 'Usuarios', exact: false },
