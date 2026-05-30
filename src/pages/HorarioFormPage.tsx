@@ -48,8 +48,8 @@ export default function HorarioFormPage() {
       usuario_id: existing.usuario_id,
       laboratorio_id: existing.laboratorio_id,
       dia_semana: existing.dia_semana,
-      hora_inicio: existing.hora_inicio,
-      hora_fin: existing.hora_fin,
+      hora_inicio: existing.hora_inicio?.slice(0, 5) ?? '',
+      hora_fin: existing.hora_fin?.slice(0, 5) ?? '',
       estado_id: Number(existing.estado_id),
     });
   }, [existing]);
