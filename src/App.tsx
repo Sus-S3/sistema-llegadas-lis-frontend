@@ -77,7 +77,7 @@ export default function App() {
               <ProtectedRoute><AsistenciaPage /></ProtectedRoute>
             } />
             <Route path="/horarios" element={
-              <ProtectedRoute adminOnly><HorariosPage /></ProtectedRoute>
+              <ProtectedRoute><HorariosPage /></ProtectedRoute>
             } />
             <Route path="/horarios/nuevo" element={
               <ProtectedRoute adminOnly><HorarioFormPage /></ProtectedRoute>
