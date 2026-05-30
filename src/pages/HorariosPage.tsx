@@ -28,7 +28,8 @@ function parseHour(t: string): number {
 
 // ── Tipos de calendario ────────────────────────────────────────────────────
 type CellEntry = { nombre: string; horarioId: number; isFirst: boolean };
-type CalGrid = Map<string, Map<number, CellEntry[]>>;
+// Índice principal: hora (6..20), secundario: día
+type CalGrid = Map<number, Map<string, CellEntry[]>>;
 
 function buildGrid(
   horarios: Horario[],
@@ -36,24 +37,24 @@ function buildGrid(
   targetRolId: number,
 ): CalGrid {
   const grid: CalGrid = new Map(
-    DAYS.map(d => [d, new Map(HOURS.map(h => [h, [] as CellEntry[]]))])
+    HOURS.map(h => [h, new Map(DAYS.map(d => [d, [] as CellEntry[]]))])
   );
   for (const hor of horarios) {
     if (userRolMap.get(hor.usuario_id) !== targetRolId) continue;
     const day = normDay(hor.dia_semana);
-    if (!grid.has(day)) continue;
+    if (!DAYS.includes(day)) continue;
     const start = parseHour(hor.hora_inicio);
     const end   = parseHour(hor.hora_fin);
     const nombre = hor.usuario?.nombre ?? `#${hor.usuario_id}`;
     for (let h = start; h < end; h++) {
-      if (!grid.get(day)!.has(h)) continue;
-      grid.get(day)!.get(h)!.push({ nombre, horarioId: hor.id_horarios, isFirst: h === start });
+      if (!grid.has(h)) continue;
+      grid.get(h)!.get(day)?.push({ nombre, horarioId: hor.id_horarios, isFirst: h === start });
     }
   }
   return grid;
 }
 
-// ── Sub-componente: calendario semanal ────────────────────────────────────
+// ── Sub-componente: calendario semanal (filas=horas, columnas=días) ────────
 function WeekCalendar({ title, grid }: { title: string; grid: CalGrid }) {
   return (
     <div style={{ marginBottom: '2rem' }}>
@@ -72,13 +73,13 @@ function WeekCalendar({ title, grid }: { title: string; grid: CalGrid }) {
         <table style={{
           borderCollapse: 'collapse',
           tableLayout: 'fixed',
-          minWidth: '1020px',
+          minWidth: '820px',
           width: '100%',
           background: '#fff',
         }}>
           <colgroup>
-            <col style={{ width: '88px' }} />
-            {HOURS.map(h => <col key={h} style={{ width: '62px' }} />)}
+            <col style={{ width: '72px' }} />
+            {DAYS.map(d => <col key={d} />)}
           </colgroup>
           <thead>
             <tr style={{ background: '#0d2137' }}>
@@ -88,44 +89,46 @@ function WeekCalendar({ title, grid }: { title: string; grid: CalGrid }) {
                 textTransform: 'uppercase', letterSpacing: '0.05em',
                 borderRight: '2px solid rgba(255,255,255,0.1)',
               }}>
-                Día
+                Hora
               </th>
-              {HOURS.map(h => (
-                <th key={h} style={{
-                  padding: '11px 0', textAlign: 'center',
-                  color: '#94a3b8', fontSize: '0.72rem', fontWeight: 600,
-                  borderLeft: '1px solid rgba(255,255,255,0.06)',
+              {DAYS.map(d => (
+                <th key={d} style={{
+                  padding: '11px 8px', textAlign: 'center',
+                  color: '#5bc8c0', fontSize: '0.78rem', fontWeight: 600,
+                  borderLeft: '1px solid rgba(255,255,255,0.08)',
                 }}>
-                  {h}h
+                  {d}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {DAYS.map((day, di) => (
-              <tr key={day}>
+            {HOURS.map((hour, hi) => (
+              <tr key={hour}>
                 <td style={{
                   padding: '6px 12px',
-                  fontWeight: 700, fontSize: '0.82rem', color: '#374151',
-                  background: di % 2 === 0 ? '#fff' : '#f8fafc',
+                  fontWeight: 700, fontSize: '0.8rem', color: '#374151',
+                  background: hi % 2 === 0 ? '#fff' : '#f8fafc',
                   borderRight: '2px solid #e2e8f0',
                   borderBottom: '1px solid #f1f5f9',
                   whiteSpace: 'nowrap',
+                  textAlign: 'right',
                 }}>
-                  {day}
+                  {hour}h
                 </td>
-                {HOURS.map(hour => {
-                  const entries = grid.get(day)?.get(hour) ?? [];
+                {DAYS.map(day => {
+                  const entries = grid.get(hour)?.get(day) ?? [];
                   const occupied = entries.length > 0;
                   const starters = entries.filter(e => e.isFirst);
 
                   return (
-                    <td key={hour} style={{
+                    <td key={day} style={{
+                      minHeight: '48px',
                       height: '48px',
-                      padding: occupied ? '3px 4px' : '0',
+                      padding: occupied ? '4px 6px' : '0',
                       background: occupied
                         ? '#0d2137'
-                        : (di % 2 === 0 ? '#fff' : '#f8fafc'),
+                        : (hi % 2 === 0 ? '#fff' : '#f8fafc'),
                       border: '1px solid #e2e8f0',
                       textAlign: 'center',
                       verticalAlign: 'middle',
@@ -133,7 +136,7 @@ function WeekCalendar({ title, grid }: { title: string; grid: CalGrid }) {
                     }}>
                       {starters.map((e, idx) => (
                         <div key={idx} style={{
-                          fontSize: '0.6rem',
+                          fontSize: '0.68rem',
                           fontWeight: 700,
                           color: '#5bc8c0',
                           lineHeight: 1.3,
