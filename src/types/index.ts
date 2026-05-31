@@ -80,7 +80,7 @@ export interface Horario {
   id_horarios: number;
   usuario_id: number;
   laboratorio_id: number;
-  dia_semana: string;
+  dia_semana: number;
   hora_inicio: string;
   hora_fin: string;
   estado_id: number;
@@ -92,7 +92,7 @@ export interface Horario {
 export interface HorarioFormData {
   usuario_id: number;
   laboratorio_id: number;
-  dia_semana: string;
+  dia_semana: number;
   hora_inicio: string;
   hora_fin: string;
   estado_id: number;
@@ -142,7 +142,7 @@ export interface Reemplazo {
   fecha_solicitud: string;
   solicitante?: { id_usuarios: number; nombre: string; correo: string };
   reemplazante?: { id_usuarios: number; nombre: string; correo: string };
-  horario?: { id_horarios: number; dia_semana: string; hora_inicio: string; hora_fin: string };
+  horario?: { id_horarios: number; dia_semana: number; hora_inicio: string; hora_fin: string };
 }
 
 export interface ReemplazoFormData {

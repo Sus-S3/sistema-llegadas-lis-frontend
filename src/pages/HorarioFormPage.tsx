@@ -8,18 +8,18 @@ import Layout from '../components/Layout';
 import type { HorarioFormData } from '../types';
 
 const DIAS = [
-  { value: 'LUNES',     label: 'Lunes' },
-  { value: 'MARTES',    label: 'Martes' },
-  { value: 'MIERCOLES', label: 'Miércoles' },
-  { value: 'JUEVES',    label: 'Jueves' },
-  { value: 'VIERNES',   label: 'Viernes' },
-  { value: 'SABADO',    label: 'Sábado' },
+  { value: 1, label: 'Lunes' },
+  { value: 2, label: 'Martes' },
+  { value: 3, label: 'Miércoles' },
+  { value: 4, label: 'Jueves' },
+  { value: 5, label: 'Viernes' },
+  { value: 6, label: 'Sábado' },
 ];
 
 const initialForm: HorarioFormData = {
   usuario_id: 0,
   laboratorio_id: 0,
-  dia_semana: 'LUNES',
+  dia_semana: 1,
   hora_inicio: '',
   hora_fin: '',
   estado_id: 1,
@@ -76,7 +76,7 @@ export default function HorarioFormPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    const numericFields = ['usuario_id', 'laboratorio_id', 'estado_id'];
+    const numericFields = ['usuario_id', 'laboratorio_id', 'dia_semana', 'estado_id'];
     setForm((prev) => ({
       ...prev,
       [name]: numericFields.includes(name) ? parseInt(value, 10) : value,

@@ -12,15 +12,10 @@ import type { Horario } from '../types';
 const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 const HOURS = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
-// ── Helpers ────────────────────────────────────────────────────────────────
-function normDay(s: string): string {
-  const n = s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-  const map: Record<string, string> = {
-    lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles',
-    jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado',
-  };
-  return map[n] ?? s;
-}
+const DIA_MAP: Record<number, string> = {
+  1: 'Lunes', 2: 'Martes', 3: 'Miércoles',
+  4: 'Jueves', 5: 'Viernes', 6: 'Sábado',
+};
 
 function parseHour(t: string): number {
   return parseInt(t.split(':')[0], 10);
@@ -41,8 +36,8 @@ function buildGrid(
   );
   for (const hor of horarios) {
     if (userRolMap.get(hor.usuario_id) !== targetRolId) continue;
-    const day = normDay(hor.dia_semana);
-    if (!DAYS.includes(day)) continue;
+    const day = DIA_MAP[hor.dia_semana];
+    if (!day) continue;
     const start = parseHour(hor.hora_inicio);
     const end   = parseHour(hor.hora_fin);
     const nombre = hor.usuario?.nombre ?? `#${hor.usuario_id}`;
@@ -298,7 +293,7 @@ export default function HorariosPage() {
                             </td>
                             <td style={tdStyle}>
                               <span style={{ fontWeight: 500, color: '#374151' }}>
-                                {normDay(h.dia_semana)}
+                                {DIA_MAP[h.dia_semana] ?? String(h.dia_semana)}
                               </span>
                             </td>
                             <td style={tdStyle}>
