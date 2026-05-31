@@ -15,7 +15,7 @@ const initialForm: ReemplazoFormData = {
 
 const formatHora = (t: string) => t.slice(0, 5);
 
-const DIAS_ORDEN = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+const DIA_MAP: Record<number, string> = { 1: 'Lunes', 2: 'Martes', 3: 'Miércoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sábado' };
 
 export default function ReemplazoFormPage() {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ export default function ReemplazoFormPage() {
 
   const horariosDelSolicitante = todosHorarios?.filter(
     (h) => h.usuario_id === form.solicitante_id,
-  ).sort((a, b) => DIAS_ORDEN.indexOf(a.dia_semana) - DIAS_ORDEN.indexOf(b.dia_semana)) ?? [];
+  ).sort((a, b) => a.dia_semana - b.dia_semana) ?? [];
 
   const reemplazantesDisponibles = usuarios?.filter(
     (u) => u.id_usuarios !== form.solicitante_id,
@@ -162,7 +162,7 @@ export default function ReemplazoFormPage() {
               </option>
               {horariosDelSolicitante.map((h) => (
                 <option key={h.id_horarios} value={h.id_horarios}>
-                  {h.dia_semana} — {formatHora(h.hora_inicio)} a {formatHora(h.hora_fin)}
+                  {DIA_MAP[h.dia_semana] ?? h.dia_semana} — {formatHora(h.hora_inicio)} a {formatHora(h.hora_fin)}
                   {h.laboratorio?.nombre ? ` (${h.laboratorio.nombre})` : ''}
                 </option>
               ))}
