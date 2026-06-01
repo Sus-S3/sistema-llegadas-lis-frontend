@@ -201,7 +201,7 @@ export default function AsistenciaPage() {
                     </td>
                     <td style={tdStyle}>
                       <span style={{ fontFamily: 'monospace', fontSize: '0.85rem', color: '#374151', letterSpacing: '0.03em' }}>
-                        {r.tarjeta?.uid_nfc ?? `#${r.tarjeta_id}`}
+                        {r.tarjeta?.uid_nfc ?? '—'}
                       </span>
                     </td>
                     <td style={tdStyle}>
