@@ -15,11 +15,10 @@ const formatFechaHora = (iso: string) => {
   return `${fecha}, ${hora}`;
 };
 
-const TIPO_COLORS: Record<string, { bg: string; color: string }> = {
-  Entrada:  { bg: '#d1fae5', color: '#065f46' },
-  Salida:   { bg: '#fee2e2', color: '#991b1b' },
-  entrada:  { bg: '#d1fae5', color: '#065f46' },
-  salida:   { bg: '#fee2e2', color: '#991b1b' },
+const ESTADO_COLORS: Record<string, { bg: string; color: string }> = {
+  'A tiempo': { bg: '#d1fae5', color: '#065f46' },
+  'Tarde':    { bg: '#fef3c7', color: '#92400e' },
+  'Ausente':  { bg: '#fee2e2', color: '#991b1b' },
 };
 
 export default function AsistenciaPage() {
@@ -163,7 +162,7 @@ export default function AsistenciaPage() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ background: '#0d2137' }}>
-                {['Fecha y hora', 'Usuario', 'Tarjeta UID', 'Tipo'].map((h) => (
+                {['Fecha y hora', 'Usuario', 'Tarjeta UID', 'Estado'].map((h) => (
                   <th key={h} style={{
                     color: '#5bc8c0',
                     fontWeight: 600,
@@ -178,7 +177,8 @@ export default function AsistenciaPage() {
             </thead>
             <tbody>
               {registros.map((r, i) => {
-                const tipoColors = TIPO_COLORS[r.tipo] ?? { bg: '#e0f7f5', color: '#2a7d7b' };
+                const estadoNombre = r.estado?.nombre ?? '';
+                const estadoColors = ESTADO_COLORS[estadoNombre] ?? { bg: '#f1f5f9', color: '#64748b' };
                 return (
                   <tr key={r.id_asistencia} style={{
                     background: i % 2 === 0 ? '#fff' : '#f8fafc',
@@ -205,8 +205,8 @@ export default function AsistenciaPage() {
                       </span>
                     </td>
                     <td style={tdStyle}>
-                      <span className="badge" style={{ background: tipoColors.bg, color: tipoColors.color }}>
-                        {r.tipo}
+                      <span className="badge" style={{ background: estadoColors.bg, color: estadoColors.color }}>
+                        {estadoNombre || '—'}
                       </span>
                     </td>
                   </tr>

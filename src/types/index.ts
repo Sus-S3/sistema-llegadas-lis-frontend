@@ -107,6 +107,7 @@ export interface Asistencia {
   clasificacion?: string;
   usuario?: { id_usuario: number; nombre: string; correo: string };
   tarjeta?: { id_tarjeta: number; uid_nfc: string };
+  estado?: { nombre: string } | null;
 }
 
 export interface Justificacion {
