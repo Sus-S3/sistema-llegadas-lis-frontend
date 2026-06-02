@@ -30,6 +30,8 @@ export default function UsersPage() {
   const rolesMap = new Map(roles?.map((r) => [r.id_roles, r.nombre]) ?? []);
 
   const filtered = users?.filter((u) => {
+    const activo = (u.estado?.nombre ?? (u.estado_id === 1 ? 'Activo' : '')) === 'Activo';
+    if (!activo) return false;
     if (!search.trim()) return true;
     const q = search.toLowerCase();
     return u.nombre.toLowerCase().includes(q) || u.correo.toLowerCase().includes(q);

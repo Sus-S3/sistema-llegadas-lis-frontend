@@ -161,7 +161,7 @@ export default function UserFormPage() {
           <div className="form-field">
             <label className="form-label">Estado</label>
             <select name="estado_id" value={form.estado_id} onChange={handleChange} disabled={loadingEstados} className="form-input">
-              {estados?.map((e) => (
+              {estados?.filter(e => e.categoria_estado_id === 1).map((e) => (
                 <option key={e.id_estados} value={e.id_estados}>{e.nombre}</option>
               ))}
             </select>

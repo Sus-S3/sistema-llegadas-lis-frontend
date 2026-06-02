@@ -232,7 +232,7 @@ export default function HorarioFormPage() {
               disabled={loadingEstados}
               className="form-input"
             >
-              {estados?.map((e) => (
+              {estados?.filter(e => e.categoria_estado_id === 1).map((e) => (
                 <option key={e.id_estados} value={e.id_estados}>{e.nombre}</option>
               ))}
             </select>
