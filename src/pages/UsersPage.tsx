@@ -69,7 +69,13 @@ export default function UsersPage() {
       </div>
 
       {error && <div className="alert-error">{(error as Error).message}</div>}
-      {deleteMutation.error && <div className="alert-error">{(deleteMutation.error as Error).message}</div>}
+      {deleteMutation.error && (
+        <div className="alert-error">
+          {(deleteMutation.error as Error & { status?: number }).status === 409
+            ? 'No se puede eliminar este usuario porque tiene registros asociados en el sistema.'
+            : (deleteMutation.error as Error).message}
+        </div>
+      )}
 
       {isLoading ? (
         <div className="spinner-container"><div className="spinner" /></div>

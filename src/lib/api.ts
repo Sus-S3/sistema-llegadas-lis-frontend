@@ -19,7 +19,9 @@ api.interceptors.response.use(
   (error) => {
     const raw = error.response?.data?.message;
     const msg = typeof raw === 'string' ? raw : error.message || 'Error de conexión';
-    return Promise.reject(new Error(msg));
+    const err = new Error(msg) as Error & { status?: number };
+    err.status = error.response?.status;
+    return Promise.reject(err);
   }
 );
 
