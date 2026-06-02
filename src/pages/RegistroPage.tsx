@@ -24,7 +24,6 @@ interface MarcarResponse {
   puntualidad?: string;
   clasificacion?: string;
   fecha_hora?: string;
-  ya_registrado?: boolean;
 }
 
 type EstadoAsistencia = 'a_tiempo' | 'tarde' | 'sin_horario' | 'error';
@@ -37,7 +36,6 @@ interface RegistroResult {
   estadoAsistencia: EstadoAsistencia;
   hora: string;
   mensaje?: string;
-  yaRegistrado?: boolean;
 }
 
 const ESTADO_CFG: Record<EstadoAsistencia, {
@@ -111,7 +109,6 @@ export default function RegistroPage() {
         tipo: data.tipo,
         estadoAsistencia: normalizeEstado(estadoRaw),
         hora: formatHora(data.fecha_hora),
-        yaRegistrado: data.ya_registrado ?? false,
       });
     } catch (err) {
       setResult({
@@ -355,11 +352,6 @@ export default function RegistroPage() {
                 {result.tipo && (
                   <span className="badge" style={{ background: '#e0f7f5', color: '#2a7d7b', fontSize: '0.8rem' }}>
                     {result.tipo}
-                  </span>
-                )}
-                {result.yaRegistrado && (
-                  <span className="badge" style={{ background: '#f0f4ff', color: '#3730a3', border: '1px solid #c7d2fe', fontSize: '0.8rem' }}>
-                    Ya registrado hoy
                   </span>
                 )}
                 <span style={{ marginLeft: 'auto', fontSize: '0.88rem', color: '#0d2137', fontWeight: 700 }}>
