@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useAsistencia } from '../hooks/useAsistencia';
 import { useUsers } from '../hooks/useUsers';
 import { useAuth } from '../contexts/AuthContext';
 import Layout from '../components/Layout';
+import LectorNFC from '../components/LectorNFC';
 import api from '../lib/api';
 import { ClipboardList, Search, FileDown } from 'lucide-react';
 
@@ -32,6 +34,11 @@ export default function AsistenciaPage() {
   const { data: usuarios } = useUsers();
 
   const isAdmin = rolId === 6;
+  const queryClient = useQueryClient();
+
+  const handleRegistroExitoso = useCallback(() => {
+    void queryClient.invalidateQueries({ queryKey: ['asistencia'] });
+  }, [queryClient]);
 
   const aplicarFiltros = () => {
     setFiltrosActivos({ fecha, usuario_id: usuarioId });
@@ -75,6 +82,9 @@ export default function AsistenciaPage() {
           <p className="page-subtitle">Registro de llegadas y salidas</p>
         </div>
       </div>
+
+      {/* Lector NFC — solo admin */}
+      {isAdmin && <LectorNFC onRegistroExitoso={handleRegistroExitoso} />}
 
       {/* Filtros */}
       <div style={{

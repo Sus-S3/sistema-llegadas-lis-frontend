@@ -1,12 +1,12 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { getTokenPayload } from '../lib/auth';
-import { Users, Building2, Smartphone, CreditCard, ClipboardList, Calendar, ScanLine, FileText, RefreshCw, LogOut } from 'lucide-react';
+import { Users, Building2, Smartphone, CreditCard, ClipboardList, Calendar, FileText, RefreshCw, LogOut } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 const ADMIN_ROL_ID = 6;
 
-const ADMIN_ONLY_ROUTES = new Set(['/laboratorios', '/dispositivos', '/tarjetas', '/registro']);
+const ADMIN_ONLY_ROUTES = new Set(['/laboratorios', '/dispositivos', '/tarjetas']);
 
 const NAV = [
   { to: '/usuarios', icon: Users, label: 'Usuarios', exact: false },
@@ -15,8 +15,7 @@ const NAV = [
   { to: '/tarjetas', icon: CreditCard, label: 'Tarjetas', exact: false },
   { to: '/asistencia', icon: ClipboardList, label: 'Asistencia', exact: false },
   { to: '/horarios', icon: Calendar, label: 'Horarios', exact: false },
-  { to: '/registro', icon: ScanLine, label: 'Registro', exact: false },
-  { to: '/justificaciones', icon: FileText, label: 'Justificaciones', exact: false },
+{ to: '/justificaciones', icon: FileText, label: 'Justificaciones', exact: false },
   { to: '/reemplazos', icon: RefreshCw, label: 'Reemplazos', exact: false },
 ];
 
