@@ -4,6 +4,7 @@ import { FileText, Plus, Trash2, ClipboardCheck } from 'lucide-react';
 import Layout from '../components/Layout';
 import { useJustificaciones, useDeleteJustificacion, useRevisarJustificacion } from '../hooks/useJustificaciones';
 import { useEstados } from '../hooks/useEstados';
+import { useAuth } from '../contexts/AuthContext';
 import { getTokenPayload } from '../lib/auth';
 
 const ESTADO_BADGE: Record<string, { bg: string; color: string }> = {
@@ -67,9 +68,18 @@ function RevisarConfirm({ id, onDone }: { id: number; onDone: () => void }) {
 }
 
 export default function JustificacionesPage() {
-  const { data: justificaciones, isLoading, error } = useJustificaciones();
+  const { rolId } = useAuth();
+  const payload = getTokenPayload();
+  const miId = parseInt(payload?.sub ?? '0', 10);
+  const isAdmin = rolId === 6;
+
+  const { data: rawJustificaciones, isLoading, error } = useJustificaciones();
   const deleteMutation = useDeleteJustificacion();
   const navigate = useNavigate();
+
+  const justificaciones = isAdmin
+    ? (rawJustificaciones ?? [])
+    : (rawJustificaciones ?? []).filter(j => j.usuario_id === miId);
 
   const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -92,9 +102,11 @@ export default function JustificacionesPage() {
           <h1 className="page-title"><FileText size={22} /> Justificaciones</h1>
           <p className="page-subtitle">Solicitudes de justificación de asistencia</p>
         </div>
-        <button className="btn-primary" onClick={() => navigate('/justificaciones/nueva')}>
-          <Plus size={15} /> Nueva justificación
-        </button>
+        {!isAdmin && (
+          <button className="btn-primary" onClick={() => navigate('/justificaciones/nueva')}>
+            <Plus size={15} /> Nueva justificación
+          </button>
+        )}
       </div>
 
       {error && <div className="alert-error">{(error as Error).message}</div>}

@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAsistencia } from '../hooks/useAsistencia';
 import { useUsers } from '../hooks/useUsers';
 import { useAuth } from '../contexts/AuthContext';
+import { getTokenPayload } from '../lib/auth';
 import Layout from '../components/Layout';
 import LectorNFC from '../components/LectorNFC';
 import api from '../lib/api';
@@ -30,10 +31,16 @@ export default function AsistenciaPage() {
   const [filtrosActivos, setFiltrosActivos] = useState<{ fecha: string; usuario_id?: number }>({ fecha: today() });
   const [downloading, setDownloading] = useState<'excel' | 'pdf' | null>(null);
 
-  const { data: registros, isLoading, error } = useAsistencia(filtrosActivos);
+  const { data, isLoading, error } = useAsistencia(filtrosActivos);
   const { data: usuarios } = useUsers();
 
   const isAdmin = rolId === 6;
+  const payload = getTokenPayload();
+  const miId = parseInt(payload?.sub ?? '0', 10);
+
+  const registros = isAdmin
+    ? (data ?? [])
+    : (data ?? []).filter(r => r.usuario_id === miId);
   const queryClient = useQueryClient();
 
   const handleRegistroExitoso = useCallback(() => {
@@ -111,22 +118,24 @@ export default function AsistenciaPage() {
           />
         </div>
 
-        <div>
-          <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', color: '#374151', marginBottom: '5px' }}>
-            Usuario
-          </label>
-          <select
-            value={usuarioId ?? ''}
-            onChange={(e) => setUsuarioId(e.target.value === '' ? undefined : parseInt(e.target.value, 10))}
-            className="form-input"
-            style={{ width: '220px' }}
-          >
-            <option value="">Todos los usuarios</option>
-            {usuarios?.map((u) => (
-              <option key={u.id_usuarios} value={u.id_usuarios}>{u.nombre}</option>
-            ))}
-          </select>
-        </div>
+        {isAdmin && (
+          <div>
+            <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', color: '#374151', marginBottom: '5px' }}>
+              Usuario
+            </label>
+            <select
+              value={usuarioId ?? ''}
+              onChange={(e) => setUsuarioId(e.target.value === '' ? undefined : parseInt(e.target.value, 10))}
+              className="form-input"
+              style={{ width: '220px' }}
+            >
+              <option value="">Todos los usuarios</option>
+              {usuarios?.map((u) => (
+                <option key={u.id_usuarios} value={u.id_usuarios}>{u.nombre}</option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <button className="btn-primary" onClick={aplicarFiltros} style={{ marginBottom: '1px' }}>
           <Search size={15} /> Filtrar
