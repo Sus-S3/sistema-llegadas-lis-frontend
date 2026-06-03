@@ -34,11 +34,12 @@ export default function AsistenciaPage() {
   const { data, isLoading, error } = useAsistencia(filtrosActivos);
   const { data: usuarios } = useUsers();
 
-  const isAdmin = rolId === 6;
-  const payload = getTokenPayload();
-  const miId = parseInt(payload?.sub ?? '0', 10);
+  const isAdmin  = rolId === 6;
+  const isGestor = rolId === 7;
+  const payload  = getTokenPayload();
+  const miId     = parseInt(payload?.sub ?? '0', 10);
 
-  const registros = isAdmin
+  const registros = (isAdmin || isGestor)
     ? (data ?? [])
     : (data ?? []).filter(r => r.usuario_id === miId);
   const queryClient = useQueryClient();
@@ -91,7 +92,7 @@ export default function AsistenciaPage() {
       </div>
 
       {/* Lector NFC — solo admin */}
-      {isAdmin && <LectorNFC onRegistroExitoso={handleRegistroExitoso} />}
+      {(isAdmin || isGestor) && <LectorNFC onRegistroExitoso={handleRegistroExitoso} />}
 
       {/* Filtros */}
       <div style={{
@@ -118,7 +119,7 @@ export default function AsistenciaPage() {
           />
         </div>
 
-        {isAdmin && (
+        {(isAdmin || isGestor) && (
           <div>
             <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', color: '#374151', marginBottom: '5px' }}>
               Usuario

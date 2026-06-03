@@ -5,8 +5,12 @@ import { getTokenPayload } from '../lib/auth';
 import { Users, Building2, Smartphone, CreditCard, ClipboardList, Calendar, FileText, RefreshCw, LogOut, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-const ADMIN_ROL_ID = 6;
-const ADMIN_ONLY_ROUTES = new Set(['/laboratorios', '/dispositivos', '/tarjetas']);
+const ADMIN_ROL_ID  = 6;
+const GESTOR_ROL_ID = 7;
+
+// Rutas ocultas según rol (el Admin ve todo)
+const GESTOR_HIDDEN   = new Set(['/laboratorios', '/dispositivos', '/tarjetas', '/justificaciones', '/reemplazos']);
+const AUXILIAR_HIDDEN = new Set(['/laboratorios', '/dispositivos', '/tarjetas']);
 const NAV = [
   { to: '/usuarios',       icon: Users,        label: 'Usuarios',       exact: false },
   { to: '/laboratorios',   icon: Building2,    label: 'Laboratorios',   exact: false },
@@ -26,9 +30,14 @@ export default function Layout({ children }: { children: ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
 
   const { logout, rolId } = useAuth();
-  const visibleNav = rolId === ADMIN_ROL_ID
+  const isAdmin  = rolId === ADMIN_ROL_ID;
+  const isGestor = rolId === GESTOR_ROL_ID;
+
+  const visibleNav = isAdmin
     ? NAV
-    : NAV.filter(({ to }) => !ADMIN_ONLY_ROUTES.has(to));
+    : isGestor
+      ? NAV.filter(({ to }) => !GESTOR_HIDDEN.has(to))
+      : NAV.filter(({ to }) => !AUXILIAR_HIDDEN.has(to));
 
   const navigate  = useNavigate();
   const location  = useLocation();
