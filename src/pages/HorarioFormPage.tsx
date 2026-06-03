@@ -7,6 +7,19 @@ import { useEstados } from '../hooks/useEstados';
 import Layout from '../components/Layout';
 import type { HorarioFormData } from '../types';
 
+const HORAS = [
+  '06:00','07:00','08:00','09:00','10:00','11:00','12:00',
+  '13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00',
+];
+
+function formatHoraLabel(h: string): string {
+  const [hh] = h.split(':').map(Number);
+  if (hh === 0)  return '12:00 am';
+  if (hh < 12)   return `${hh}:00 am`;
+  if (hh === 12) return '12:00 pm';
+  return `${hh - 12}:00 pm`;
+}
+
 const DIAS = [
   { value: 1, label: 'Lunes' },
   { value: 2, label: 'Martes' },
@@ -196,31 +209,33 @@ export default function HorarioFormPage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div className="form-field">
               <label className="form-label">Hora inicio</label>
-              <input
-                type="time"
+              <select
                 name="hora_inicio"
                 value={form.hora_inicio}
                 onChange={handleChange}
-                min="06:00"
-                max="20:00"
-                step={3600}
                 className={`form-input${errors.hora_inicio ? ' has-error' : ''}`}
-              />
+              >
+                <option value="" disabled>Selecciona hora</option>
+                {HORAS.map(h => (
+                  <option key={h} value={h}>{formatHoraLabel(h)}</option>
+                ))}
+              </select>
               {errors.hora_inicio && <p className="form-error">{errors.hora_inicio}</p>}
             </div>
 
             <div className="form-field">
               <label className="form-label">Hora fin</label>
-              <input
-                type="time"
+              <select
                 name="hora_fin"
                 value={form.hora_fin}
                 onChange={handleChange}
-                min="06:00"
-                max="20:00"
-                step={3600}
                 className={`form-input${errors.hora_fin ? ' has-error' : ''}`}
-              />
+              >
+                <option value="" disabled>Selecciona hora</option>
+                {HORAS.map(h => (
+                  <option key={h} value={h}>{formatHoraLabel(h)}</option>
+                ))}
+              </select>
               {errors.hora_fin && <p className="form-error">{errors.hora_fin}</p>}
             </div>
           </div>
