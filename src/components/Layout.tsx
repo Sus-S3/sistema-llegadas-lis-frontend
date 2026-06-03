@@ -18,13 +18,12 @@ const NAV = [
   { to: '/reemplazos',     icon: RefreshCw,    label: 'Reemplazos',     exact: false },
 ];
 
-const LOGO_URL = 'https://lis.udea.edu.co/wp-content/uploads/2020/09/cropped-logo-lis-192x192.png';
+const LOGO_URL = '/logo-lis.png';
 const W_EXPANDED  = 220;
 const W_COLLAPSED =  60;
 
 export default function Layout({ children }: { children: ReactNode }) {
   const [collapsed, setCollapsed] = useState(false);
-  const [logoError, setLogoError] = useState(false);
 
   const { logout, rolId } = useAuth();
   const visibleNav = rolId === ADMIN_ROL_ID
@@ -104,33 +103,18 @@ export default function Layout({ children }: { children: ReactNode }) {
           textAlign: 'center',
           overflow: 'hidden',
         }}>
-          {logoError ? (
-            <div style={{
+          <img
+            src={LOGO_URL}
+            alt="LIS"
+            style={{
               width: collapsed ? 34 : 56,
               height: collapsed ? 34 : 56,
               borderRadius: '50%',
-              background: '#5bc8c0',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: collapsed ? 13 : 18,
-              fontWeight: 'bold', color: '#0d2137',
+              objectFit: 'cover',
               flexShrink: 0,
-              transition: 'width 0.2s ease, height 0.2s ease, font-size 0.2s ease',
-            }}>LIS</div>
-          ) : (
-            <img
-              src={LOGO_URL}
-              alt="LIS"
-              onError={() => setLogoError(true)}
-              style={{
-                width: collapsed ? 34 : 56,
-                height: collapsed ? 34 : 56,
-                borderRadius: '50%',
-                objectFit: 'cover',
-                flexShrink: 0,
-                transition: 'width 0.2s ease, height 0.2s ease',
-              }}
-            />
-          )}
+              transition: 'width 0.2s ease, height 0.2s ease',
+            }}
+          />
           {!collapsed && (
             <p style={{
               color: '#fff', fontWeight: 700, fontSize: '0.9rem',
