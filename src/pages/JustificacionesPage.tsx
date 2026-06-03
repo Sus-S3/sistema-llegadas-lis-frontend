@@ -213,14 +213,14 @@ export default function JustificacionesPage() {
                             No
                           </button>
                         </div>
-                      ) : revisarId === j.id_justificacion ? (
+                      ) : isAdmin && revisarId === j.id_justificacion ? (
                         <RevisarConfirm
                           id={j.id_justificacion}
                           onDone={() => setRevisarId(null)}
                         />
                       ) : (
                         <div style={{ display: 'flex', gap: '4px' }}>
-                          {estadoNombre === 'Pendiente' && (
+                          {isAdmin && estadoNombre === 'Pendiente' && (
                             <button
                               className="btn-icon edit"
                               title="Revisar"
