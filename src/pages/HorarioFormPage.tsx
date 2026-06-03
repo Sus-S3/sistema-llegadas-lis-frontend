@@ -203,6 +203,7 @@ export default function HorarioFormPage() {
                 onChange={handleChange}
                 min="06:00"
                 max="20:00"
+                step={3600}
                 className={`form-input${errors.hora_inicio ? ' has-error' : ''}`}
               />
               {errors.hora_inicio && <p className="form-error">{errors.hora_inicio}</p>}
@@ -217,6 +218,7 @@ export default function HorarioFormPage() {
                 onChange={handleChange}
                 min="06:00"
                 max="20:00"
+                step={3600}
                 className={`form-input${errors.hora_fin ? ' has-error' : ''}`}
               />
               {errors.hora_fin && <p className="form-error">{errors.hora_fin}</p>}
