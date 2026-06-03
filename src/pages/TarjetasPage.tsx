@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTarjetas, useDeleteTarjeta } from '../hooks/useTarjetas';
+import { useAuth } from '../contexts/AuthContext';
 import Layout from '../components/Layout';
+import LectorNFCTarjeta from '../components/LectorNFCTarjeta';
 import { CreditCard, Plus, Pencil, Trash2, User } from 'lucide-react';
 
 const STATUS_COLORS: Record<number, { bg: string; color: string }> = {
@@ -10,9 +12,11 @@ const STATUS_COLORS: Record<number, { bg: string; color: string }> = {
 };
 
 export default function TarjetasPage() {
+  const { rolId } = useAuth();
   const { data: tarjetas, isLoading, error } = useTarjetas();
   const deleteMutation = useDeleteTarjeta();
   const navigate = useNavigate();
+  const isAdmin = rolId === 6;
   const [confirmId, setConfirmId] = useState<number | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
@@ -37,6 +41,8 @@ export default function TarjetasPage() {
           <Plus size={15} /> Nueva tarjeta
         </button>
       </div>
+
+      {isAdmin && <LectorNFCTarjeta />}
 
       {error && <div className="alert-error">{(error as Error).message}</div>}
       {deleteMutation.error && <div className="alert-error">{(deleteMutation.error as Error).message}</div>}

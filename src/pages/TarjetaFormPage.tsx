@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom';
 import { useTarjeta, useCreateTarjeta, useUpdateTarjeta } from '../hooks/useTarjetas';
 import { useUsers } from '../hooks/useUsers';
 import { useEstados } from '../hooks/useEstados';
@@ -18,13 +18,16 @@ export default function TarjetaFormPage() {
   const isEdit = tarjetaId > 0;
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const uidFromUrl = searchParams.get('uid') ?? '';
+
   const { data: existing, isLoading: loadingTarjeta, error: loadError } = useTarjeta(tarjetaId);
   const { data: usuarios, isLoading: loadingUsuarios } = useUsers();
   const { data: estados, isLoading: loadingEstados } = useEstados();
   const createMutation = useCreateTarjeta();
   const updateMutation = useUpdateTarjeta(tarjetaId);
 
-  const [form, setForm] = useState<TarjetaFormData>(initialForm);
+  const [form, setForm] = useState<TarjetaFormData>({ ...initialForm, uid_nfc: uidFromUrl });
   const [errors, setErrors] = useState<Partial<Record<keyof TarjetaFormData, string>>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -120,8 +123,12 @@ export default function TarjetaFormPage() {
               value={form.uid_nfc}
               onChange={handleChange}
               placeholder="Ej: A3:4F:2B:1C"
+              readOnly={!!uidFromUrl}
               className={`form-input${errors.uid_nfc ? ' has-error' : ''}`}
-              style={{ fontFamily: 'monospace', letterSpacing: '0.05em' }}
+              style={{
+                fontFamily: 'monospace', letterSpacing: '0.05em',
+                ...(uidFromUrl ? { background: '#f8fafc', cursor: 'default' } : {}),
+              }}
             />
             {errors.uid_nfc && <p className="form-error">{errors.uid_nfc}</p>}
           </div>
