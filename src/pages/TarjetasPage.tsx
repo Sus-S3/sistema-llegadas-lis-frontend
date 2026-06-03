@@ -37,9 +37,11 @@ export default function TarjetasPage() {
           <h1 className="page-title"><CreditCard size={22} /> Tarjetas NFC</h1>
           <p className="page-subtitle">Gestión de tarjetas NFC del sistema</p>
         </div>
-        <button className="btn-primary" onClick={() => navigate('/tarjetas/nueva')}>
-          <Plus size={15} /> Nueva tarjeta
-        </button>
+        {isAdmin && (
+          <button className="btn-primary" onClick={() => navigate('/tarjetas/nueva')}>
+            <Plus size={15} /> Nueva tarjeta
+          </button>
+        )}
       </div>
 
       {isAdmin && <LectorNFCTarjeta />}
