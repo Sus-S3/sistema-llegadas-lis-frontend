@@ -19,6 +19,7 @@ const STATUS_COLORS: Record<number, { bg: string; color: string }> = {
 
 export default function UsersPage() {
   const { rolId } = useAuth();
+  const isAdmin = rolId === 6;
   const { data: users, isLoading, error } = useUsers();
   const { data: roles } = useRoles();
   const deleteMutation = useDeleteUser();
@@ -64,9 +65,11 @@ export default function UsersPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <button className="btn-primary" onClick={() => navigate('/usuarios/nuevo')}>
-            <Plus size={15} /> Nuevo usuario
-          </button>
+          {isAdmin && (
+            <button className="btn-primary" onClick={() => navigate('/usuarios/nuevo')}>
+              <Plus size={15} /> Nuevo usuario
+            </button>
+          )}
         </div>
       </div>
 
@@ -122,7 +125,7 @@ export default function UsersPage() {
                   </div>
 
                   <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '0.75rem', display: 'flex', justifyContent: 'flex-end', gap: '2px' }}>
-                    {rolId === 6 && (confirmId === user.id_usuarios ? (
+                    {isAdmin && (confirmId === user.id_usuarios ? (
                       <div className="confirm-row">
                         <span style={{ fontSize: '0.78rem', color: '#64748b' }}>¿Eliminar?</span>
                         <button className="btn-confirm-yes" onClick={() => handleDelete(user.id_usuarios)} disabled={deletingId === user.id_usuarios}>
