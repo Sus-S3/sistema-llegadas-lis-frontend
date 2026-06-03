@@ -2,6 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../lib/api';
 import type { Asistencia } from '../types';
 
+export function useMisAsistenciasJustificables() {
+  return useQuery<Asistencia[]>({
+    queryKey: ['mis-asistencias-justificables'],
+    queryFn: () => api.get('/asistencia/mis-asistencias').then(r => r.data),
+  });
+}
+
 interface FiltrosAsistencia {
   usuario_id?: number;
   fecha?: string;
